@@ -37,8 +37,6 @@ import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
 import java.util.Timer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.KeyStroke;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.DefaultEditorKit;
@@ -365,6 +363,11 @@ public class JTextPane extends javax.swing.JTextPane {
 		insertDocumentHistory();
 	}
 	
+	@Override
+	public JToolTip createToolTip() {
+		return new JToolTip();
+	}
+	
 	//====================
 	// region G & S
 	//====================
@@ -423,15 +426,19 @@ public class JTextPane extends javax.swing.JTextPane {
 		try {
 			this.setCharacterAttributes( documentHistory.getStyle(), false, null, null, null );
 		} catch (Re01JLibException ex) {
-			Logger.getLogger(JTextPane.class.getName()).log(Level.SEVERE, null, ex);
+			
 		}
-		this.setCaretPosition( documentHistory.getCaretPosition() );
+		try {
+			this.setCaretPosition( documentHistory.getCaretPosition() + 1 );
+		} catch ( IllegalArgumentException ex ) {
+			this.setCaretPosition( documentHistory.getCaretPosition() );
+		}
 	}
 	
 	private void insertDocumentHistory() {
 		if ( isDocumentHistoryNeedPurge == true ) {
-			purgeDocumentHistory();
 			isDocumentHistoryNeedPurge = false;
+			purgeDocumentHistory();
 		}
 		
 		int selectionStart = this.getSelectionStart();
@@ -442,7 +449,7 @@ public class JTextPane extends javax.swing.JTextPane {
 		try {
 			documentHistory = new DocumentHistory( this.getText(), this.copyStyle(true), caretPosition );
 		} catch (Re01JLibException ex) {
-			Logger.getLogger(JTextPane.class.getName()).log(Level.SEVERE, null, ex);
+			
 		}
 		this.setCaretPosition( caretPosition );
 
@@ -505,7 +512,7 @@ public class JTextPane extends javax.swing.JTextPane {
 			posEnd = paneToCopy.getSelectionEnd();
 		} else {
 			posStart = 0;
-			posEnd = paneToCopy.getText().length();
+			posEnd = paneToCopy.getDocument().getLength();
 		}
 		
 		HashMap<Integer, HashMap<SimpleAttributeSet, Integer[]>> simplesAttributesSet = new HashMap<>();
@@ -520,22 +527,21 @@ public class JTextPane extends javax.swing.JTextPane {
 		Integer wNewLast = wNew;
 		
 		int w = posStart;
-		Integer wLast = w;
 		while ( w < posEnd ) {
 			paneToCopy.setCaretPosition( w );
 			attributeSet = paneToCopy.getCharacterAttributes();
-			
+
 			//====================
 			// region create current attributes
 			//====================
-			
+
 			attributesCurrent.clear();
-			
+
 			Enumeration attrNames = attributeSet.getAttributeNames();
 			while ( attrNames.hasMoreElements() ) {
 				Object attrName = attrNames.nextElement();
 				String attrNameStr = attrName.toString();
-				
+
 				boolean attrNameStrFound = false;
 				Set<Entry<Object, Object>> attributesCurrentSet = attributesCurrent.entrySet();
 				Iterator<Entry<Object, Object>> attributesCurrentSetIt = attributesCurrentSet.iterator();
@@ -551,7 +557,7 @@ public class JTextPane extends javax.swing.JTextPane {
 				if ( attrNameStrFound == false )
 					attributesCurrent.put( attrName, attributeSet.getAttribute(attrName) );
 			}
-			
+
 			if ( attributesLast == null ) {
 				attributesLast = new HashMap<Object, Object>();
 				Set<Entry<Object, Object>> attributesCurrentSet = attributesCurrent.entrySet();
@@ -560,21 +566,21 @@ public class JTextPane extends javax.swing.JTextPane {
 					Entry<Object, Object> attributesCurrentEntry = attributesCurrentSetIt.next();
 					Object attributeCurrent = attributesCurrentEntry.getKey();
 					Object attributeCurrentValue = attributesCurrentEntry.getValue();
-					
+
 					attributesLast.put( attributeCurrent, attributeCurrentValue );
 				}
 			}
-			
+
 			//====================
 			// end region create current attributes
 			//====================
-			
+
 			//====================
 			// region compare attributes
 			//====================
-			
+
 			boolean isAttributesLastSameAsCurrent = true;
-			
+
 			Integer attributesCurrentLength = attributesCurrent.size();
 			Integer attributesLastLength = attributesLast.size();
 			Integer compareAttributesLength = attributesCurrentLength.compareTo(attributesLastLength);
@@ -587,7 +593,7 @@ public class JTextPane extends javax.swing.JTextPane {
 					Entry<Object, Object> attributesCurrentEntry = attributesCurrentSetIt.next();
 					Object attributeCurrent = attributesCurrentEntry.getKey();
 					String attributeCurrentStr = attributeCurrent.toString();
-					
+
 					boolean attrNameStrFound = false;
 					Set<Entry<Object, Object>> attributesLastSet = attributesLast.entrySet();
 					Iterator<Entry<Object, Object>> attributesLastSetIt = attributesLastSet.iterator();
@@ -595,9 +601,9 @@ public class JTextPane extends javax.swing.JTextPane {
 						Entry<Object, Object> attributesLastEntry = attributesLastSetIt.next();
 						Object attributeLast = attributesLastEntry.getKey();
 						String attributeLastStr = attributeLast.toString();
-						
+
 						if ( attributeLastStr.equals(attributeCurrentStr) ) {
-							
+
 							switch ( attributeLastStr ) {
 								case ("bold"):
 								case ("underline"):
@@ -640,7 +646,7 @@ public class JTextPane extends javax.swing.JTextPane {
 						Entry<Object, Object> attributesLastEntry = attributesLastSetIt.next();
 						Object attributeLast = attributesLastEntry.getKey();
 						String attributeLastStr = attributeLast.toString();
-						
+
 						boolean attrNameStrFound = false;
 						attributesCurrentSetIt = attributesCurrentSet.iterator();
 						while ( attributesCurrentSetIt.hasNext() ) {
@@ -648,7 +654,7 @@ public class JTextPane extends javax.swing.JTextPane {
 							Object attributeCurrent = attributesCurrentEntry.getKey();
 							String attributesCurrentStr = attributeCurrent.toString();
 							if ( attributesCurrentStr.equals(attributeLastStr) == true ) {
-								
+
 								switch ( attributeLastStr ) {
 									case ("bold"):
 									case ("underline"):
@@ -686,16 +692,16 @@ public class JTextPane extends javax.swing.JTextPane {
 					}
 				}
 			}
-			
+
 			//====================
 			// end region compare attributes
 			//====================
-			
+
 			if ( isAttributesLastSameAsCurrent == false || Objects.equals(new Integer(w + 1), posEnd) == true ) {
 				//====================
 				// region add attribute
 				//====================
-				
+
 				SimpleAttributeSet simpleAttributeSet = new SimpleAttributeSet();
 				Set<Entry<Object, Object>> attributesLastSet = attributesLast.entrySet();
 				Iterator<Entry<Object, Object>> attributesLastSetIt = attributesLastSet.iterator();
@@ -725,19 +731,18 @@ public class JTextPane extends javax.swing.JTextPane {
 							break;
 					}
 				}
-				
+
 				HashMap<SimpleAttributeSet, Integer[]> simpleAttributeSetMap = new HashMap<>();
 				simpleAttributeSetMap.put( simpleAttributeSet, new Integer[]{ wNewLast, wNew + 1 } );
 				simplesAttributesSet.put( simplesAttributesSetIndex, simpleAttributeSetMap );
 				simplesAttributesSetIndex++;
-				
+
 				//====================
 				// end region add attribute
 				//====================
-				
-				wLast = w;
+
 				wNewLast = wNew;
-				
+
 				attributesLast = new HashMap<Object, Object>();
 				Set<Entry<Object, Object>> attributesCurrentSet = attributesCurrent.entrySet();
 				Iterator<Entry<Object, Object>> attributesCurrentSetIt = attributesCurrentSet.iterator();
@@ -1038,11 +1043,13 @@ public class JTextPane extends javax.swing.JTextPane {
 	public void setCharacterAttributes( HashMap<Integer, HashMap<SimpleAttributeSet, Integer[]>> simplesAttributesSet, boolean isAttrExistOnEveryPosition, Integer positionPlus, FontStyleEnum fontStyleNew, Color colorNew ) throws Re01JLibException {
 		Set<Entry<Integer, HashMap<SimpleAttributeSet, Integer[]>>> simplesAttributesSetEntry = simplesAttributesSet.entrySet();
 		Iterator<Entry<Integer, HashMap<SimpleAttributeSet, Integer[]>>> simplesAttributesSetEntryIt = simplesAttributesSetEntry.iterator();
+		
 		while ( simplesAttributesSetEntryIt.hasNext() ) {
 			Entry<Integer, HashMap<SimpleAttributeSet, Integer[]>> simpleAttributeSetSubEntry = simplesAttributesSetEntryIt.next();
 			HashMap<SimpleAttributeSet, Integer[]> simpleAttrSetSub = simpleAttributeSetSubEntry.getValue();
 			Set<Entry<SimpleAttributeSet, Integer[]>> simplesAttributesSetSubEntry = simpleAttrSetSub.entrySet();
 			Iterator<Entry<SimpleAttributeSet, Integer[]>> simplesAttributesSetSubEntryIt = simplesAttributesSetSubEntry.iterator();
+			
 			while ( simplesAttributesSetSubEntryIt.hasNext() ) {
 				Entry<SimpleAttributeSet, Integer[]> simpleAttributeSetEntry = simplesAttributesSetSubEntryIt.next();
 				SimpleAttributeSet simpleAttrSet = simpleAttributeSetEntry.getKey();
@@ -1089,7 +1096,7 @@ public class JTextPane extends javax.swing.JTextPane {
 							break;
 					}
 				}
-
+				
 				StyledDocument doc = this.getStyledDocument();
 				try {
 					doc.setCharacterAttributes( posStartToSet, posEndToSet - posStartToSet, simpleAttrSet, true );

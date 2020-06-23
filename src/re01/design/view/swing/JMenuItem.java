@@ -93,4 +93,9 @@ public class JMenuItem extends javax.swing.JMenuItem {
 		super.removeActionListener( listener );
 	}
 	
+	@Override
+	public JToolTip createToolTip() {
+		return new JToolTip();
+	}
+	
 }

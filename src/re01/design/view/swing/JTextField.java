@@ -104,4 +104,9 @@ public class JTextField extends javax.swing.JTextField {
 		super.removeMouseListener( listener );
 	}
 	
+	@Override
+	public JToolTip createToolTip() {
+		return new JToolTip();
+	}
+	
 }

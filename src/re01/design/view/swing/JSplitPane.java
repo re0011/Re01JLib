@@ -35,4 +35,9 @@ public class JSplitPane extends javax.swing.JSplitPane {
 		super(newOrientation, newLeftComponent, newRightComponent);
 	}
 	
+	@Override
+	public JToolTip createToolTip() {
+		return new JToolTip();
+	}
+	
 }

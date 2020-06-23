@@ -189,6 +189,47 @@ public class StringHelper {
 		return result;
 	}
 	
+	public String removeBlankLinesAtEnd( String str ) {
+		String strNew = "";
+		String strNewTry = "";
+		
+		StringReader stringReader = null;
+		BufferedReader bufferedReader = null;
+		
+		try {
+			stringReader = new StringReader( str );
+			bufferedReader = new BufferedReader( stringReader );
+			
+			boolean isFirstIt = true;
+			String line;
+			while ( ( line = bufferedReader.readLine() ) != null ) {
+				if ( line.trim().isEmpty() == false ) {
+					strNew = strNewTry;
+					if ( isFirstIt == false )
+						strNew += "\n" + line;
+					else
+						strNew += line;
+					strNewTry = strNew;
+				} else
+					strNewTry += "\n";
+				
+				isFirstIt = false;
+			}
+			
+		} catch ( Exception e ) {
+			
+		} finally {
+			try {
+				stringReader.close();
+			} catch ( Exception ex ) { }
+			try {
+				bufferedReader.close();
+			} catch ( Exception ex ) { }
+		}
+		
+		return strNew;
+	}
+	
 	//====================
 	// end region remove
 	//====================

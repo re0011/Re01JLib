@@ -44,18 +44,22 @@ public class JPanel extends javax.swing.JPanel implements Scrollable {
 	
 	public JPanel() {
 		super();
-		applyTheme();
+		construct();
 	}
 	
 	public JPanel( JComponent[] components ) {
 		super();
 		this.setLayout( new GridLayout( 2, 1 ) );
-		applyTheme();
+		construct();
 		
 		for ( int i = 0; i < components.length; i++ ) {
 			this.add( components[i] );
 			
 		}
+	}
+	
+	private void construct() {
+		this.setBackground( Parameters.getThemeSelected().getPanelBackgroundColor().getRgbColor() );
 	}
 	
 	@Override
@@ -130,12 +134,9 @@ public class JPanel extends javax.swing.JPanel implements Scrollable {
 		return false;
 	}
 	
-	private void applyTheme() {
-		switch ( Parameters.getThemeSelected().getThemeType() ) {
-			case MetalSlate:
-				this.setBackground(new Color( ColorTypeEnum.Gray, ColorAttributeTypeEnum.Background ).getRgbColor() );
-				break;
-		}
+	@Override
+	public JToolTip createToolTip() {
+		return new JToolTip();
 	}
 	
 }

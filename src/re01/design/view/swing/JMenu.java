@@ -57,4 +57,9 @@ public class JMenu extends javax.swing.JMenu {
 		));
 	}
 	
+	@Override
+	public JToolTip createToolTip() {
+		return new JToolTip();
+	}
+	
 }

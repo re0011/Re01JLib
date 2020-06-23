@@ -98,4 +98,9 @@ public class JSlider extends javax.swing.JSlider {
 		}
 	}
 	
+	@Override
+	public JToolTip createToolTip() {
+		return new JToolTip();
+	}
+	
 }

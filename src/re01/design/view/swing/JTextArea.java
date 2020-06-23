@@ -72,4 +72,9 @@ public class JTextArea extends javax.swing.JTextArea {
 		this.setEditable( false );
 	}
 	
+	@Override
+	public JToolTip createToolTip() {
+		return new JToolTip();
+	}
+	
 }

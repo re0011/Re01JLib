@@ -122,6 +122,11 @@ public class JLabel extends javax.swing.JLabel {
 			mousesListeners.remove( listener );
 		super.removeMouseListener( listener );
 	}
+	
+	@Override
+	public JToolTip createToolTip() {
+		return new JToolTip();
+	}
 
 	public String getFullText() {
 		return fullText;

@@ -51,4 +51,9 @@ public class JTree extends javax.swing.JTree {
 		setFont( font );
 	}
 	
+	@Override
+	public JToolTip createToolTip() {
+		return new JToolTip();
+	}
+	
 }

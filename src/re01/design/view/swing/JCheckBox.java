@@ -58,4 +58,9 @@ public class JCheckBox extends javax.swing.JCheckBox {
 		));
 	}
 	
+	@Override
+	public JToolTip createToolTip() {
+		return new JToolTip();
+	}
+	
 }

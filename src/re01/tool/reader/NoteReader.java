@@ -121,11 +121,11 @@ public class NoteReader {
 		return bodyContent;
 	}
 	
-	public String parseToString( JTextPane pane ) {
+	public String parseToString( JTextPane pane ) throws Re01JLibException {
 		String strParsed = "";
 		
 		int posStart = 0;
-		Integer posEnd = pane.getText().length();
+		Integer posEnd = pane.getDocument().getLength();
 		
 		HashMap<Object, Object> attributesCurrent = new HashMap<>();
 		HashSet<String> attributesNamesStrCurrent = new HashSet<>();
@@ -133,26 +133,26 @@ public class NoteReader {
 		AttributeSet attributeSet = null;
 		
 		int w = posStart;
+		
 		while ( w < posEnd ) {
 			pane.setCaretPosition( w );
 			attributeSet = pane.getCharacterAttributes();
-			
+
 			//====================
 			// region create current attributes
 			//====================
-			
+
 			attributesNamesStrCurrent.clear();
-			
+
 			Enumeration attrNames = attributeSet.getAttributeNames();
 			while ( attrNames.hasMoreElements() ) {
 				Object attrName = attrNames.nextElement();
 				String attrNameStr = attrName.toString();
-				
+
 				attributesNamesStrCurrent.add( attrNameStr );
-				
+
 				Object attrNameFound = null;
-				boolean attrNameStrFound = false;
-				
+
 				Set<Map.Entry<Object, Object>> attributesCurrentSet = attributesCurrent.entrySet();
 				Iterator<Map.Entry<Object, Object>> attributesCurrentSetIt = attributesCurrentSet.iterator();
 				while ( attributesCurrentSetIt.hasNext() ) {
@@ -161,11 +161,10 @@ public class NoteReader {
 					String attributeCurrentStr = attributeCurrent.toString();
 					if ( attributeCurrentStr.equals(attrNameStr) ) {
 						attrNameFound = attributeCurrent;
-						attrNameStrFound = true;
 						break;
 					}
 				}
-				
+
 				Object attrValue = attributeSet.getAttribute(attrName);
 				switch ( attrNameStr ) {
 					case ("bold"):
@@ -220,11 +219,11 @@ public class NoteReader {
 						break;
 					case ("size"):
 						Integer sizeInt = (Integer) attrValue;
-						
+
 						FontSize fontSizeH1 = new FontSize( Parameters.getThemeSelected(), FontStyleEnum.Title1 );
 						FontSize fontSizeH2 = new FontSize( Parameters.getThemeSelected(), FontStyleEnum.Title2 );
 						FontSize fontSizeH3 = new FontSize( Parameters.getThemeSelected(), FontStyleEnum.Title3 );
-						
+
 						if ( attrNameFound != null ) {
 							Integer sizeIntCurrent = (Integer) attributesCurrent.get( attrNameFound );
 							if ( Objects.equals(sizeInt, sizeIntCurrent) == false ) {
@@ -235,7 +234,7 @@ public class NoteReader {
 								} else if ( Objects.equals(sizeIntCurrent, fontSizeH3.getSize()) == true && Objects.equals(sizeInt, fontSizeH3.getSize()) == false ) {
 									strParsed += "[/h3]";
 								}
-								
+
 								if ( Objects.equals(sizeIntCurrent, fontSizeH1.getSize()) == false && Objects.equals(sizeInt, fontSizeH1.getSize()) == true ) {
 									strParsed += "[h1]";
 								} else if ( Objects.equals(sizeIntCurrent, fontSizeH2.getSize()) == false && Objects.equals(sizeInt, fontSizeH2.getSize()) == true ) {
@@ -442,7 +441,8 @@ public class NoteReader {
 			
 			String strChar = "";
 			try {
-				strChar = pane.getText(w, 1);
+				// Need to "pane.getDocument().getText()" instead of "pane.getText()" overwise the length of the text will not be equals on differents operating systems
+				strChar = pane.getDocument().getText(w, 1);
 			} catch (BadLocationException ex) {
 				Logger.getLogger(NoteReader.class.getName()).log(Level.SEVERE, null, ex);
 			}
@@ -502,7 +502,6 @@ public class NoteReader {
 				String character;
 				String str = "";
 				String strToAdd;
-				Integer lastAddTextIndex = 0;
 				ArrayList<FontStyleEnum> fontsStyles = new ArrayList<>();
 				ColorTypeEnum foregroundColor = null;
 				ColorTypeEnum backgroundColor = null;
@@ -530,7 +529,6 @@ public class NoteReader {
 										pane.addText( strToAdd, Parameters.getThemeSelected().createFont(fontsStyles, foregroundColor, backgroundColor) );
 									}
 									str = "";
-									lastAddTextIndex = index;
 
 									switch ( tagSub ) {
 										case ( "[b]" ):

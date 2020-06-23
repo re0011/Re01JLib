@@ -56,4 +56,9 @@ public class JFileChooser extends javax.swing.JFileChooser {
 		return ARG_KEY_PATH_SELECTED;
 	}
 	
+	@Override
+	public JToolTip createToolTip() {
+		return new JToolTip();
+	}
+	
 }

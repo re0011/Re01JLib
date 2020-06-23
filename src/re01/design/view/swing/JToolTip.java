@@ -29,19 +29,9 @@ import re01.environment.Parameters;
  *
  * @author renaud
  */
-public class JPopupMenu extends javax.swing.JPopupMenu {
+public class JToolTip extends javax.swing.JToolTip {
 	
-	public JPopupMenu( String text ) {
-		super( text );
-		construct();
-	}
-	
-	public JPopupMenu() {
-		super();
-		construct();
-	}
-	
-	private void construct() {
+	public JToolTip() {
 		java.awt.Font font = Parameters.getThemeSelected().createFont(new ArrayList<FontStyleEnum>(Arrays.asList(FontStyleEnum.SizeNormal))).getFont();
 		if ( font == null ) {
 			FontSize fontSize = new FontSize( Parameters.getThemeSelected(), FontStyleEnum.SizeNormal );
@@ -49,13 +39,8 @@ public class JPopupMenu extends javax.swing.JPopupMenu {
 		}
 		setFont( font );
 		
-		this.setForeground( Parameters.getThemeSelected().getPopupMenuForegroundColor().getRgbColor() );
-		this.setBackground( Parameters.getThemeSelected().getPopupMenuBackgroundColor().getRgbColor() );
-	}
-	
-	@Override
-	public JToolTip createToolTip() {
-		return new JToolTip();
+		this.setForeground( Parameters.getThemeSelected().getPopupForegroundColor().getRgbColor() );
+		this.setBackground( Parameters.getThemeSelected().getPopupBackgroundColor().getRgbColor() );
 	}
 	
 }

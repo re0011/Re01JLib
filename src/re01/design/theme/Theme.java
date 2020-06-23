@@ -45,6 +45,10 @@ public class Theme {
 	private Color selectionColor;
 	private Color osFolderColor;
 	
+	private Color panelBackgroundColor;
+	
+	private Color popupForegroundColor;
+	private Color popupBackgroundColor;
 	private Color popupMenuForegroundColor;
 	private Color popupMenuBackgroundColor;
 	
@@ -121,6 +125,33 @@ public class Theme {
 				break;
 			default:
 				this.osFolderColor = new Color( ColorTypeEnum.YellowNaples, ColorAttributeTypeEnum.Background );
+				break;
+		}
+		
+		switch ( this.themeType ) {
+			case MetalSlate:
+				this.panelBackgroundColor = new Color( ColorTypeEnum.Gray, ColorAttributeTypeEnum.Background );
+				break;
+			default:
+				this.panelBackgroundColor = new Color( ColorTypeEnum.Gray, ColorAttributeTypeEnum.Background );
+				break;
+		}
+		
+		switch ( this.themeType ) {
+			case MetalSlate:
+				this.popupForegroundColor = new Color( ColorTypeEnum.DarkBlueGray, ColorAttributeTypeEnum.Foreground );
+				break;
+			default:
+				this.popupForegroundColor = new Color( ColorTypeEnum.Black, ColorAttributeTypeEnum.Foreground );
+				break;
+		}
+		
+		switch ( this.themeType ) {
+			case MetalSlate:
+				this.popupBackgroundColor = new Color( ColorTypeEnum.Gainsboro, ColorAttributeTypeEnum.Background );
+				break;
+			default:
+				this.popupBackgroundColor = new Color( ColorTypeEnum.GrayLight, ColorAttributeTypeEnum.Background );
 				break;
 		}
 		
@@ -260,6 +291,18 @@ public class Theme {
 
 	public Color getOsFolderColor() {
 		return osFolderColor;
+	}
+
+	public Color getPanelBackgroundColor() {
+		return panelBackgroundColor;
+	}
+
+	public Color getPopupForegroundColor() {
+		return popupForegroundColor;
+	}
+
+	public Color getPopupBackgroundColor() {
+		return popupBackgroundColor;
 	}
 
 	public Color getPopupMenuForegroundColor() {

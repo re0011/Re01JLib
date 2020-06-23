@@ -37,12 +37,12 @@ public class Parameters {
 	
 	private static final int DEFAULT_WINDOW_WIDTH = new Float( new Float(DESKTOP_WIDTH) * (new Float(512) / new Float(1920)) ).intValue();
 	private static final int PARAMETERS_WINDOW_WIDTH = new Float( new Float(DESKTOP_WIDTH) * (new Float(1024) / new Float(1920)) ).intValue();
-	private static final int POPUP_WINDOW_WIDTH = new Float( new Float(DESKTOP_WIDTH) * (new Float(256) / new Float(1920)) ).intValue();
+	private static final int POPUP_WINDOW_WIDTH = new Float( new Float(DESKTOP_WIDTH) * (new Float(288) / new Float(1920)) ).intValue();
 	private static final int MIN_WINDOW_WIDTH = new Float( new Float(DESKTOP_WIDTH) * (new Float(256) / new Float(1920)) ).intValue();
 	
 	private static final int DEFAULT_WINDOW_HEIGHT = new Float( new Float(DESKTOP_HEIGHT) * (new Float(448) / new Float(1200)) ).intValue();
 	private static final int PARAMETERS_WINDOW_HEIGHT = new Float( new Float(DESKTOP_HEIGHT) * (new Float(768) / new Float(1200)) ).intValue();
-	private static final int POPUP_WINDOW_HEIGHT = new Float( new Float(DESKTOP_HEIGHT) * (new Float(256) / new Float(1200)) ).intValue();
+	private static final int POPUP_WINDOW_HEIGHT = new Float( new Float(DESKTOP_HEIGHT) * (new Float(320) / new Float(1200)) ).intValue();
 	private static final int MIN_WINDOW_HEIGHT = new Float( new Float(DESKTOP_HEIGHT) * (new Float(256) / new Float(1200)) ).intValue();
 	
 	private static final int DESKTOP_WIDTH_MIN_FOR_STRICTS_VALUES = 1024;
@@ -88,129 +88,142 @@ public class Parameters {
 	// region get
 	//====================
 
-	public static final int get_DEFAULT_WINDOW_WIDTH() {
+	public static int get_DEFAULT_WINDOW_WIDTH() {
 		return DEFAULT_WINDOW_WIDTH;
 	}
 
-	public static final int get_PARAMETERS_WINDOW_WIDTH() {
+	public static int get_PARAMETERS_WINDOW_WIDTH() {
 		return PARAMETERS_WINDOW_WIDTH;
 	}
 
-	public static final int get_POPUP_WINDOW_WIDTH() {
+	public static int get_POPUP_WINDOW_WIDTH() {
 		return POPUP_WINDOW_WIDTH;
 	}
 	
-	public static final int get_MIN_WINDOW_WIDTH() {
+	public static int get_MIN_WINDOW_WIDTH() {
 		return MIN_WINDOW_WIDTH;
 	}
 	
-	public static final int get_DEFAULT_WINDOW_HEIGHT() {
+	public static int get_DEFAULT_WINDOW_HEIGHT() {
 		return DEFAULT_WINDOW_HEIGHT;
 	}
 	
-	public static final int get_PARAMETERS_WINDOW_HEIGHT() {
+	public static int get_PARAMETERS_WINDOW_HEIGHT() {
 		return PARAMETERS_WINDOW_HEIGHT;
 	}
 	
-	public static final int get_POPUP_WINDOW_HEIGHT() {
+	public static int get_POPUP_WINDOW_HEIGHT() {
 		return POPUP_WINDOW_HEIGHT;
 	}
 
-	public static final int get_MIN_WINDOW_HEIGHT() {
+	public static int get_MIN_WINDOW_HEIGHT() {
 		return MIN_WINDOW_HEIGHT;
 	}
 
-	public static final int get_DEFAULT_CHARS_BASE_SIZE() {
+	public static int get_DEFAULT_CHARS_BASE_SIZE() {
 		return DEFAULT_CHARS_BASE_SIZE;
 	}
 	
-	public static final int get_MIN_CHARS_BASE_SIZE() {
+	public static int get_MIN_CHARS_BASE_SIZE() {
 		return MIN_CHARS_BASE_SIZE;
 	}
 
-	public static final int get_MAX_CHARS_BASE_SIZE() {
+	public static int get_MAX_CHARS_BASE_SIZE() {
 		return MAX_CHARS_BASE_SIZE;
 	}
 
-	public static final int get_DEFAULT_COMPONENT_SPACING_WIDTH() {
+	public static int get_STRICT_MIN_CHARS_BASE_SIZE() {
+		return STRICT_MIN_CHARS_BASE_SIZE;
+	}
+
+	public static int get_DEFAULT_COMPONENT_SPACING_WIDTH() {
 		return DEFAULT_COMPONENT_SPACING_WIDTH;
 	}
 
-	public static final int get_MIN_COMPONENT_SPACING_WIDTH() {
+	public static int get_MIN_COMPONENT_SPACING_WIDTH() {
 		return MIN_COMPONENT_SPACING_WIDTH;
 	}
 
-	public static final int get_DEFAULT_ICONS_SIZE() {
+	public static int get_DEFAULT_ICONS_SIZE() {
 		return DEFAULT_ICONS_SIZE;
 	}
 
-	public static final int get_MIN_ICONS_SIZE() {
+	public static int get_MIN_ICONS_SIZE() {
 		return MIN_ICONS_SIZE;
 	}
 
-	public static final int get_MAX_ICONS_SIZE() {
+	public static int get_MAX_ICONS_SIZE() {
 		return MAX_ICONS_SIZE;
 	}
 
-	public static final int get_DEFAULT_SCROLL_BAR_SIZE() {
+	public static int get_DEFAULT_SCROLL_BAR_SIZE() {
 		return DEFAULT_SCROLL_BAR_SIZE;
 	}
 
-	public static final int get_DEFAULT_SCROLL_HORIZONTAL_UNIT_INCREMENT() {
+	public static int get_DEFAULT_SCROLL_HORIZONTAL_UNIT_INCREMENT() {
 		return DEFAULT_SCROLL_HORIZONTAL_UNIT_INCREMENT;
 	}
 
-	public static final int get_DEFAULT_SCROLL_VERTICAL_UNIT_INCREMENT() {
+	public static int get_DEFAULT_SCROLL_VERTICAL_UNIT_INCREMENT() {
 		return DEFAULT_SCROLL_VERTICAL_UNIT_INCREMENT;
 	}
 
-	public static final int get_DEFAULT_DOCUMENT_HISTORY_LENGTH() {
+	public static int get_DEFAULT_DOCUMENT_HISTORY_LENGTH() {
 		return DEFAULT_DOCUMENT_HISTORY_LENGTH;
 	}
 
-	public static final int get_MIN_DOCUMENT_HISTORY_LENGTH() {
+	public static int get_MIN_DOCUMENT_HISTORY_LENGTH() {
 		return MIN_DOCUMENT_HISTORY_LENGTH;
 	}
 
-	public static final int get_MAX_DOCUMENT_HISTORY_LENGTH() {
+	public static int get_MAX_DOCUMENT_HISTORY_LENGTH() {
 		return MAX_DOCUMENT_HISTORY_LENGTH;
 	}
 	
-	public static final int get_RECOMMENDED_WINDOW_WIDTH() {
+	public static int get_RECOMMENDED_WINDOW_WIDTH() {
 		return DEFAULT_WINDOW_WIDTH;
 	}
 	
-	public static final int get_RECOMMENDED_PARAMETERS_WINDOW_WIDTH() {
+	public static int get_RECOMMENDED_PARAMETERS_WINDOW_WIDTH() {
 		return PARAMETERS_WINDOW_WIDTH;
 	}
 
-	public static final int get_RECOMMENDED_POPUP_WINDOW_WIDTH() {
+	public static int get_RECOMMENDED_POPUP_WINDOW_WIDTH() {
 		return POPUP_WINDOW_WIDTH;
 	}
 	
-	public static final int get_RECOMMENDED_WINDOW_HEIGHT() {
+	public static int get_RECOMMENDED_WINDOW_HEIGHT() {
 		return DEFAULT_WINDOW_HEIGHT;
 	}
 	
-	public static final int get_RECOMMENDED_PARAMETERS_WINDOW_HEIGHT() {
+	public static int get_RECOMMENDED_PARAMETERS_WINDOW_HEIGHT() {
 		return PARAMETERS_WINDOW_HEIGHT;
 	}
 	
-	public static final int get_RECOMMENDED_POPUP_WINDOW_HEIGHT() {
+	public static int get_RECOMMENDED_POPUP_WINDOW_HEIGHT() {
 		return POPUP_WINDOW_HEIGHT;
 	}
 	
-	public static final int get_RECOMMENDED_CHARS_BASE_SIZE() {
+	public static int get_RECOMMENDED_CHARS_BASE_SIZE() {
+		int minCharsBaseSize = 0;
 		if ( DESKTOP_WIDTH > DESKTOP_WIDTH_MIN_FOR_STRICTS_VALUES ) {
-			if ( DEFAULT_CHARS_BASE_SIZE > MIN_CHARS_BASE_SIZE )
-				return DEFAULT_CHARS_BASE_SIZE;
-			else
-				return MIN_CHARS_BASE_SIZE;
+			if ( MIN_CHARS_BASE_SIZE > STRICT_MIN_CHARS_BASE_SIZE ) {
+				if ( DEFAULT_CHARS_BASE_SIZE > MIN_CHARS_BASE_SIZE )
+					minCharsBaseSize = DEFAULT_CHARS_BASE_SIZE;
+				else
+					minCharsBaseSize = MIN_CHARS_BASE_SIZE;
+			} else {
+				if ( DEFAULT_CHARS_BASE_SIZE > STRICT_MIN_CHARS_BASE_SIZE )
+					minCharsBaseSize = DEFAULT_CHARS_BASE_SIZE;
+				else
+					minCharsBaseSize = STRICT_MIN_CHARS_BASE_SIZE;
+			}
 		} else
-			return STRICT_MIN_CHARS_BASE_SIZE;
+			minCharsBaseSize = STRICT_MIN_CHARS_BASE_SIZE;
+		return minCharsBaseSize;
 	}
 	
-	public static final int get_RECOMMENDED_COMPONENT_SPACING_WIDTH() {
+	public static int get_RECOMMENDED_COMPONENT_SPACING_WIDTH() {
 		if ( DESKTOP_WIDTH > DESKTOP_WIDTH_MIN_FOR_STRICTS_VALUES ) {
 			if ( DEFAULT_COMPONENT_SPACING_WIDTH > MIN_COMPONENT_SPACING_WIDTH )
 				return DEFAULT_COMPONENT_SPACING_WIDTH;
@@ -220,7 +233,7 @@ public class Parameters {
 			return STRICT_MIN_COMPONENT_SPACING_WIDTH;
 	}
 	
-	public static final int get_RECOMMENDED_COMPONENT_MARGIN_WIDTH() {
+	public static int get_RECOMMENDED_COMPONENT_MARGIN_WIDTH() {
 		if ( DESKTOP_WIDTH > DESKTOP_WIDTH_MIN_FOR_STRICTS_VALUES ) {
 			if ( DEFAULT_COMPONENT_MARGIN_WIDTH > MIN_COMPONENT_MARGIN_WIDTH )
 				return DEFAULT_COMPONENT_MARGIN_WIDTH;
@@ -230,14 +243,14 @@ public class Parameters {
 			return STRICT_MIN_COMPONENT_MARGIN_WIDTH;
 	}
 	
-	public static final int get_RECOMMENDED_COMPONENT_MARGIN_HEIGHT() {
+	public static int get_RECOMMENDED_COMPONENT_MARGIN_HEIGHT() {
 		if ( DEFAULT_COMPONENT_MARGIN_HEIGHT > STRICT_MIN_COMPONENT_MARGIN_HEIGHT )
 			return DEFAULT_COMPONENT_MARGIN_HEIGHT;
 		else
 			return STRICT_MIN_COMPONENT_MARGIN_HEIGHT;
 	}
 	
-	public static final int get_RECOMMENDED_ICONS_SIZE() {
+	public static int get_RECOMMENDED_ICONS_SIZE() {
 		if ( DESKTOP_WIDTH > DESKTOP_WIDTH_MIN_FOR_STRICTS_VALUES ) {
 			if ( DEFAULT_ICONS_SIZE > MIN_ICONS_SIZE )
 				return DEFAULT_ICONS_SIZE;
@@ -247,15 +260,15 @@ public class Parameters {
 			return STRICT_MIN_ICONS_SIZE;
 	}
 	
-	public static final int get_RECOMMENDED_SCROLL_BAR_SIZE() {
+	public static int get_RECOMMENDED_SCROLL_BAR_SIZE() {
 		return DEFAULT_SCROLL_BAR_SIZE;
 	}
 	
-	public static final int get_RECOMMENDED_SCROLL_HORIZONTAL_UNIT_INCREMENT() {
+	public static int get_RECOMMENDED_SCROLL_HORIZONTAL_UNIT_INCREMENT() {
 		return DEFAULT_SCROLL_HORIZONTAL_UNIT_INCREMENT;
 	}
 
-	public static final int get_RECOMMENDED_SCROLL_VERTICAL_UNIT_INCREMENT() {
+	public static int get_RECOMMENDED_SCROLL_VERTICAL_UNIT_INCREMENT() {
 		return DEFAULT_SCROLL_VERTICAL_UNIT_INCREMENT;
 	}
 	

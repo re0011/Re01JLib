@@ -110,6 +110,11 @@ public class JComboBox extends javax.swing.JComboBox {
 		super.removeActionListener( listener );
 	}
 	
+	@Override
+	public JToolTip createToolTip() {
+		return new JToolTip();
+	}
+	
 	public void addItemsColors( ArrayList<Color> colors ) {
 		Iterator<Color> colorsIt = colors.iterator();
 		while ( colorsIt.hasNext() ) {
@@ -129,4 +134,5 @@ public class JComboBox extends javax.swing.JComboBox {
 			this.addItem( imageIcon );
 		}
 	}
+	
 }

@@ -52,4 +52,9 @@ public class JScrollPane extends javax.swing.JScrollPane {
 		this.setBorder( null );
 	}
 	
+	@Override
+	public JToolTip createToolTip() {
+		return new JToolTip();
+	}
+	
 }

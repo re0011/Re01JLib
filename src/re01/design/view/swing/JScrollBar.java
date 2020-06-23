@@ -53,4 +53,9 @@ public class JScrollBar extends javax.swing.JScrollBar {
 		}
 	}
 	
+	@Override
+	public JToolTip createToolTip() {
+		return new JToolTip();
+	}
+	
 }

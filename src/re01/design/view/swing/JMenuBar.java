@@ -36,4 +36,9 @@ public class JMenuBar extends javax.swing.JMenuBar {
 		));
 	}
 	
+	@Override
+	public JToolTip createToolTip() {
+		return new JToolTip();
+	}
+	
 }

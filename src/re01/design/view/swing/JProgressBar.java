@@ -41,4 +41,9 @@ public class JProgressBar extends javax.swing.JProgressBar {
 		setUI( new GlobalProgressBarUI() );
 	}
 	
+	@Override
+	public JToolTip createToolTip() {
+		return new JToolTip();
+	}
+	
 }

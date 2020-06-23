@@ -206,4 +206,9 @@ public class JButton extends javax.swing.JButton {
 		super.removeActionListener( listener );
 	}
 	
+	@Override
+	public JToolTip createToolTip() {
+		return new JToolTip();
+	}
+	
 }
