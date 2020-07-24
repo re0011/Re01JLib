@@ -22,7 +22,6 @@ package re01.design.view.frame;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import re01.design.view.awt.BorderLayout;
-import re01.design.view.component.Title1;
 import re01.design.view.component.Title3;
 import re01.design.view.swing.BoxLayout;
 import re01.design.view.swing.JPanel;
@@ -81,7 +80,7 @@ public class Loading extends Global {
 		JPanel panelNorth = new JPanel();
 		panelNorth.setLayout( new BoxLayout( panelNorth, BoxLayout.PAGE_AXIS ) );
 		
-		Title1 titleLabel = new Title1( viewTitle );
+		Title3 titleLabel = new Title3( viewTitle );
 		panelNorth.add( titleLabel );
 		
 		this.add( panelNorth, "North" );

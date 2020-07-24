@@ -85,7 +85,7 @@ public class SystemOutPrintHelper {
 			print( " | " + str + " : " + val );
 	}
 	
-	public static void print_end( boolean print ) {
+	public static void printEnd( boolean print ) {
 		if ( print )
 			print( "\n" );
 	}

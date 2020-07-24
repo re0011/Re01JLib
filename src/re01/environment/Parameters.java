@@ -47,7 +47,7 @@ public class Parameters {
 	
 	private static final int DESKTOP_WIDTH_MIN_FOR_STRICTS_VALUES = 1024;
 	
-	private static final int DEFAULT_CHARS_BASE_SIZE = new Float( new Float(DESKTOP_WIDTH) * (new Float(10) / new Float(1920))).intValue();
+	private static final int DEFAULT_CHARS_BASE_SIZE = new Float( new Float(DESKTOP_WIDTH) * (new Float(14) / new Float(1920))).intValue();
 	private static final int MIN_CHARS_BASE_SIZE = new Float( new Float(DESKTOP_WIDTH) * (new Float(7) / new Float(1920)) ).intValue();
 	private static final int MAX_CHARS_BASE_SIZE = new Float( new Float(DESKTOP_WIDTH) * (new Float(60) / new Float(1920)) ).intValue();
 	private static final int STRICT_MIN_CHARS_BASE_SIZE = 7;

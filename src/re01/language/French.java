@@ -167,6 +167,7 @@ public class French extends Global {
 		// KeyStrokes
 
 		COPY_KEYSTROKE = "control C";
+		COPY_WITH_STYLE_KEYSTROKE = "control S";
 		PASTE_KEYSTROKE = "control V";
 		
 		//=====================

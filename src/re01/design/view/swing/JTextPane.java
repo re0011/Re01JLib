@@ -268,6 +268,7 @@ public class JTextPane extends javax.swing.JTextPane {
 		if ( enableCopyActionWithStyle == true ) {
 			DefaultEditorKit.CopyAction copyActionWithStyle = new DefaultEditorKit.CopyAction();
 			copyActionWithStyle.putValue( DefaultEditorKit.CopyAction.NAME, Parameters.getLanguageSelected().get_LANG().get_COPY_WITH_STYLE());
+			copyActionWithStyle.putValue( DefaultEditorKit.CopyAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke( Parameters.getLanguageSelected().get_LANG().get_COPY_WITH_STYLE_KEYSTROKE() ) );
 			
 			JMenuItem menuItemCopyActionWithStyle = new JMenuItem( copyActionWithStyle );
 			menuItemCopyActionWithStyle.addActionListener(new ActionListener() {
@@ -1056,27 +1057,39 @@ public class JTextPane extends javax.swing.JTextPane {
 				Integer[] positions = simpleAttributeSetEntry.getValue();
 				Integer posStartToSet = ( positionPlus != null ) ? positions[0] + positionPlus : positions[0];
 				Integer posEndToSet = ( positionPlus != null ) ? positions[1] + positionPlus : positions[1];
+				
+				SimpleAttributeSet simpleAttrSetNew = new SimpleAttributeSet();
+				Enumeration attrNames = simpleAttrSet.getAttributeNames();
+				Object backgroundAttrName = null;
+				while ( attrNames.hasMoreElements() ) {
+					Object attrName = attrNames.nextElement();
+					String attrNameStr = attrName.toString();
+					if ( attrNameStr.equals("background") == false )
+						simpleAttrSetNew.addAttribute( attrName, simpleAttrSet.getAttribute(attrName) );
+					else
+						backgroundAttrName = attrName;
+				}
 
 				if ( fontStyleNew != null ) {
 					switch ( fontStyleNew ) {
 						case Bold :
 							boolean isSetBold = ( isAttrExistOnEveryPosition == false ) ? true : false;
-							StyleConstants.setBold( simpleAttrSet, isSetBold );
+							StyleConstants.setBold( simpleAttrSetNew, isSetBold );
 							break;
 						case Italic :
 							boolean isSetItalic = ( isAttrExistOnEveryPosition == false ) ? true : false;
-							StyleConstants.setItalic( simpleAttrSet, isSetItalic );
+							StyleConstants.setItalic( simpleAttrSetNew, isSetItalic );
 							break;
 						case Underline :
 							boolean isSetUnderline = ( isAttrExistOnEveryPosition == false ) ? true : false;
-							StyleConstants.setUnderline( simpleAttrSet, isSetUnderline );
+							StyleConstants.setUnderline( simpleAttrSetNew, isSetUnderline );
 							break;
 						case SizeNormal :
 						case Title1 :
 						case Title2 :
 						case Title3 :
 							FontSize fontSizeTitle = new FontSize( new Theme( ThemeTypeEnum.Undefined ), fontStyleNew );
-							StyleConstants.setFontSize( simpleAttrSet, fontSizeTitle.getSize() );
+							StyleConstants.setFontSize( simpleAttrSetNew, fontSizeTitle.getSize() );
 							break;
 					}
 				}
@@ -1084,22 +1097,20 @@ public class JTextPane extends javax.swing.JTextPane {
 					switch ( colorNew.getColorAttributeType() ) {
 						case Foreground:
 							if ( colorNew.getColorType() != ColorTypeEnum.Transparent )
-								StyleConstants.setForeground( simpleAttrSet, colorNew.getRgbColor() );
-							else
-								StyleConstants.setForeground( simpleAttrSet, new java.awt.Color(0,0,0,0) );
+								StyleConstants.setForeground( simpleAttrSetNew, colorNew.getRgbColor() );
 							break;
 						case Background:
 							if ( colorNew.getColorType() != ColorTypeEnum.Transparent )
-								StyleConstants.setBackground( simpleAttrSet, colorNew.getRgbColor() );
-							else
-								StyleConstants.setBackground( simpleAttrSet, new java.awt.Color(0,0,0,0) );
+								StyleConstants.setBackground( simpleAttrSetNew, colorNew.getRgbColor() );
 							break;
 					}
-				}
+				} else if ( backgroundAttrName != null )
+					simpleAttrSetNew.addAttribute(backgroundAttrName, simpleAttrSet.getAttribute(backgroundAttrName) );
+					
 				
 				StyledDocument doc = this.getStyledDocument();
 				try {
-					doc.setCharacterAttributes( posStartToSet, posEndToSet - posStartToSet, simpleAttrSet, true );
+					doc.setCharacterAttributes( posStartToSet, posEndToSet - posStartToSet, simpleAttrSetNew, true );
 
 				} catch ( Exception e ) {
 					throw new Re01JLibException(e);
@@ -1156,14 +1167,15 @@ public class JTextPane extends javax.swing.JTextPane {
 	//====================
 	
 	public void search( String searchKeyWord ) {
-		if ( searchTextLast.equals(searchKeyWord) == false ) {
+		String searchKeyWordLower = searchKeyWord.toLowerCase();
+		if ( searchTextLast.equals(searchKeyWordLower) == false ) {
 			searchReset();
-			searchTextLast = searchKeyWord;
+			searchTextLast = searchKeyWordLower;
 		}
 		
 		// Focus the text area, otherwise the highlighting won't show up
 		this.requestFocusInWindow();
-		if (searchKeyWord != null && searchKeyWord.length() > 0) {
+		if (searchKeyWordLower != null && searchKeyWordLower.length() > 0) {
 			Document document = this.getDocument();
 			String documentTextAll = "";
 			try {
@@ -1175,18 +1187,18 @@ public class JTextPane extends javax.swing.JTextPane {
 				textLast = documentTextAll;
 			}
 			
-			int searchKeyWordLength = searchKeyWord.length();
+			int searchKeyWordLowerLength = searchKeyWordLower.length();
 			try {
 				boolean found = false;
 				int foundQty = 0;
 				searchFoundQtyPosition = 0;
-				if (scrollPosition + searchKeyWordLength > document.getLength()) {
+				if (scrollPosition + searchKeyWordLowerLength > document.getLength()) {
 					scrollPosition = 0;
 				}
 				Integer searchFoundPositionsLength = searchFoundPositions.size();
-				while (scrollPosition + searchKeyWordLength <= document.getLength()) {
-					String match = document.getText(scrollPosition, searchKeyWordLength).toLowerCase();
-					if (match.equals(searchKeyWord) == true) {
+				while (scrollPosition + searchKeyWordLowerLength <= document.getLength()) {
+					String match = document.getText(scrollPosition, searchKeyWordLowerLength).toLowerCase();
+					if (match.equals(searchKeyWordLower) == true) {
 						found = true;
 						foundQty++;
 						if (searchFoundQty != null) {
@@ -1226,10 +1238,10 @@ public class JTextPane extends javax.swing.JTextPane {
 					// Scroll to make the rectangle visible
 					this.scrollRectToVisible(viewRect);
 					// Highlight the text
-					this.setCaretPosition(scrollPosition + searchKeyWordLength);
+					this.setCaretPosition(scrollPosition + searchKeyWordLowerLength);
 					this.moveCaretPosition(scrollPosition);
 					// Move the search position beyond the current match
-					scrollPosition += searchKeyWordLength;
+					scrollPosition += searchKeyWordLowerLength;
 				}
 
 				if (movePositionToEnd == true)

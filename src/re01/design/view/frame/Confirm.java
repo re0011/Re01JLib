@@ -30,7 +30,7 @@ import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 import re01.design.view.awt.BorderLayout;
 import re01.design.view.component.Paragraph;
-import re01.design.view.component.Title1;
+import re01.design.view.component.Title3;
 import re01.design.view.swing.BoxLayout;
 import re01.design.view.swing.JButton;
 import re01.design.view.swing.JLabel;
@@ -122,7 +122,7 @@ public class Confirm extends Global {
 		JPanel panelNorth = new JPanel();
 		panelNorth.setLayout( new BoxLayout( panelNorth, BoxLayout.PAGE_AXIS ) );
 		
-		Title1 titleLabel = new Title1( viewTitle );
+		Title3 titleLabel = new Title3( viewTitle );
 		panelNorth.add( titleLabel );
 		
 		this.add( panelNorth, "North" );

@@ -152,6 +152,7 @@ public abstract class Global {
 	// KeyStrokes
 	
 	protected String COPY_KEYSTROKE;
+	protected String COPY_WITH_STYLE_KEYSTROKE;
 	protected String PASTE_KEYSTROKE;
 	
 	//=====================
@@ -663,6 +664,10 @@ public abstract class Global {
 
 	public String get_COPY_KEYSTROKE() {
 		return COPY_KEYSTROKE;
+	}
+
+	public String get_COPY_WITH_STYLE_KEYSTROKE() {
+		return COPY_WITH_STYLE_KEYSTROKE;
 	}
 
 	public String get_PASTE_KEYSTROKE() {
