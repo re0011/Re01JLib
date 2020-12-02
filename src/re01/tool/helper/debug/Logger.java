@@ -20,11 +20,11 @@
 package re01.tool.helper.debug;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
 import re01.io.system.Files;
-import re01.tool.helper.debug.SystemOutPrintHelper;
 
 /**
  *
@@ -87,10 +87,10 @@ public class Logger {
 		Files files = new Files();
 		Date dateNow = new Date();
 		
-		String content = files.getContent( logFile );
+		String content = files.getContent( logFile, StandardCharsets.UTF_8 );
 		content += "\n\n__________ " + dateNow.toString() + " __________\n\n" + message;
 		
-		files.writeContent( logFile.getAbsolutePath(), content );
+		files.writeContent( logFile.getAbsolutePath(), content, StandardCharsets.UTF_8 );
 	}
 	
 	private void selectLogFilePath() {

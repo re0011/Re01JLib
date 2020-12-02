@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
+import java.nio.charset.Charset;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -190,11 +191,14 @@ public class Files {
 		return isCreated;
 	}
 	
-	public Boolean writeContent( String path, String content ) {
+	public Boolean writeContent( String path, String content, Charset charset ) {
 		Boolean isSaved = false;
 		PrintWriter printWriter = null;
 		try {
-			printWriter = new PrintWriter( path, "UTF-8" );
+			if ( charset != null )
+				printWriter = new PrintWriter( path, charset );
+			else
+				printWriter = new PrintWriter( path );
 			printWriter.print( content );
 			isSaved = true;
 		} catch ( Exception e ) {
@@ -230,12 +234,16 @@ public class Files {
 	// region get
 	//====================
 	
-	public String getContent( File file ) {
+	public String getContent( File file, Charset charset ) {
 		String fileContent = "";
 		FileReader fileReader = null;
 		BufferedReader bufferedReader = null;
 		try {
-			fileReader = new FileReader( file );
+			if ( charset != null )
+				fileReader = new FileReader( file, charset );
+			else
+				fileReader = new FileReader( file );
+			
 			bufferedReader = new BufferedReader( fileReader );
 			
 			String line;
