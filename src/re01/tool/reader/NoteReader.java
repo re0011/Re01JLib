@@ -41,8 +41,8 @@ import re01.design.color.ColorTypeEnum;
 import re01.design.font.FontSize;
 import re01.design.font.FontStyleEnum;
 import re01.design.view.swing.JTextPane;
-import re01.exception.Re01JLibException;
 import re01.environment.Parameters;
+import re01.exception.Re01JLibException;
 import re01.tool.helper.system.StringHelper;
 
 /**
@@ -66,19 +66,24 @@ public class NoteReader {
 	}
 	
 	public String createHeaderContent( HashMap<String, String> params ) {
-		String headerContent = TAG_HEADER_START + "\n";
+		StringBuilder stringBuilderHeaderContent = new StringBuilder(TAG_HEADER_START);
+		stringBuilderHeaderContent.append("\n");
 		
 		if ( params != null ) {
 			Set<Entry<String, String>> paramsSet = params.entrySet();
 			Iterator<Entry<String, String>> paramsSetIt = paramsSet.iterator();
 			while ( paramsSetIt.hasNext() ) {
 				Entry<String, String> paramsEntry = paramsSetIt.next();
-				headerContent += paramsEntry.getKey() + "=" + paramsEntry.getValue() + "\n";
+				stringBuilderHeaderContent.append(paramsEntry.getKey());
+				stringBuilderHeaderContent.append("=");
+				stringBuilderHeaderContent.append(paramsEntry.getValue());
+				stringBuilderHeaderContent.append("\n");
 			}
 		}
 		
-		headerContent += TAG_HEADER_END + "\n";
-		return headerContent;
+		stringBuilderHeaderContent.append(TAG_HEADER_END);
+		stringBuilderHeaderContent.append("\n");
+		return stringBuilderHeaderContent.toString();
 	}
 	
 	public String getBodyContent( String content, Boolean withDelimiters ) {
@@ -87,7 +92,8 @@ public class NoteReader {
 	}
 	
 	public String createBodyContent( String content ) {
-		String bodyContent = TAG_BODY_START + "\n";
+		StringBuilder stringBuilderBodyContent = new StringBuilder(TAG_BODY_START);
+		stringBuilderBodyContent.append("\n");
 		StringReader stringReader = null;
 		BufferedReader bufferedReader = null;
 		
@@ -99,7 +105,8 @@ public class NoteReader {
 				String line;
 				while ( ( line = bufferedReader.readLine() ) != null ) {
 					try {
-						bodyContent += line + "\n";
+						stringBuilderBodyContent.append(line);
+						stringBuilderBodyContent.append("\n");
 					} catch ( Exception e ) {
 
 					}
@@ -117,12 +124,13 @@ public class NoteReader {
 			}
 		}
 		
-		bodyContent += TAG_BODY_END + "\n";
-		return bodyContent;
+		stringBuilderBodyContent.append(TAG_BODY_END);
+		stringBuilderBodyContent.append("\n");
+		return stringBuilderBodyContent.toString();
 	}
 	
 	public String parseToString( JTextPane pane ) throws Re01JLibException {
-		String strParsed = "";
+		StringBuilder stringBuilderParsed = new StringBuilder();
 		
 		int posStart = 0;
 		Integer posEnd = pane.getDocument().getLength();
@@ -173,14 +181,14 @@ public class NoteReader {
 							Boolean boldBoolCurrent = (Boolean) attributesCurrent.get( attrNameFound );
 							if ( boldBool != boldBoolCurrent ) {
 								if ( boldBool == true ) {
-									strParsed += "[b]";
+									stringBuilderParsed.append("[b]");
 								} else {
-									strParsed += "[/b]";
+									stringBuilderParsed.append("[/b]");
 								}
 								attributesCurrent.replace( attrNameFound, attrValue );
 							}
 						} else if ( boldBool == true ) {
-							strParsed += "[b]";
+							stringBuilderParsed.append("[b]");
 							attributesCurrent.put( attrName, attrValue );
 						}
 						break;
@@ -190,13 +198,13 @@ public class NoteReader {
 							Boolean underlineBoolCurrent = (Boolean) attributesCurrent.get( attrNameFound );
 							if ( underlineBool != underlineBoolCurrent ) {
 								if ( underlineBool == true )
-									strParsed += "[u]";
+									stringBuilderParsed.append("[u]");
 								else
-									strParsed += "[/u]";
+									stringBuilderParsed.append("[/u]");
 								attributesCurrent.replace( attrNameFound, attrValue );
 							}
 						} else if ( underlineBool == true ) {
-							strParsed += "[u]";
+							stringBuilderParsed.append("[u]");
 							attributesCurrent.put( attrName, attrValue );
 						}
 						break;
@@ -206,14 +214,14 @@ public class NoteReader {
 							Boolean italicBoolCurrent = (Boolean) attributesCurrent.get( attrNameFound );
 							if ( italicBool != italicBoolCurrent ) {
 								if ( italicBool == true ) {
-									strParsed += "[i]";
+									stringBuilderParsed.append("[i]");
 								} else {
-									strParsed += "[/i]";
+									stringBuilderParsed.append("[/i]");
 								}
 								attributesCurrent.replace( attrNameFound, attrValue );
 							}
 						} else if ( italicBool == true ) {
-							strParsed += "[i]";
+							stringBuilderParsed.append("[i]");
 							attributesCurrent.put( attrName, attrValue );
 						}
 						break;
@@ -228,29 +236,29 @@ public class NoteReader {
 							Integer sizeIntCurrent = (Integer) attributesCurrent.get( attrNameFound );
 							if ( Objects.equals(sizeInt, sizeIntCurrent) == false ) {
 								if ( Objects.equals(sizeIntCurrent, fontSizeH1.getSize()) == true && Objects.equals(sizeInt, fontSizeH1.getSize()) == false ) {
-									strParsed += "[/h1]";
+									stringBuilderParsed.append("[/h1]");
 								} else if ( Objects.equals(sizeIntCurrent, fontSizeH2.getSize()) == true && Objects.equals(sizeInt, fontSizeH2.getSize()) == false ) {
-									strParsed += "[/h2]";
+									stringBuilderParsed.append("[/h2]");
 								} else if ( Objects.equals(sizeIntCurrent, fontSizeH3.getSize()) == true && Objects.equals(sizeInt, fontSizeH3.getSize()) == false ) {
-									strParsed += "[/h3]";
+									stringBuilderParsed.append("[/h3]");
 								}
 
 								if ( Objects.equals(sizeIntCurrent, fontSizeH1.getSize()) == false && Objects.equals(sizeInt, fontSizeH1.getSize()) == true ) {
-									strParsed += "[h1]";
+									stringBuilderParsed.append("[h1]");
 								} else if ( Objects.equals(sizeIntCurrent, fontSizeH2.getSize()) == false && Objects.equals(sizeInt, fontSizeH2.getSize()) == true ) {
-									strParsed += "[h2]";
+									stringBuilderParsed.append("[h2]");
 								} else if ( Objects.equals(sizeIntCurrent, fontSizeH3.getSize()) == false && Objects.equals(sizeInt, fontSizeH3.getSize()) == true ) {
-									strParsed += "[h3]";
+									stringBuilderParsed.append("[h3]");
 								}
 								attributesCurrent.replace( attrNameFound, attrValue );
 							}
 						} else {
 							if ( Objects.equals(sizeInt, fontSizeH1.getSize()) == true )
-								strParsed += "[h1]";
+								stringBuilderParsed.append("[h1]");
 							else if ( Objects.equals(sizeInt, fontSizeH2.getSize()) == true )
-								strParsed += "[h2]";
+								stringBuilderParsed.append("[h2]");
 							else if ( Objects.equals(sizeInt, fontSizeH3.getSize()) == true )
-								strParsed += "[h3]";
+								stringBuilderParsed.append("[h3]");
 							attributesCurrent.put( attrName, attrValue );
 						}
 						break;
@@ -276,7 +284,8 @@ public class NoteReader {
 										}
 									}
 								}
-								strParsed += strColorEnd + strColorStart;
+								stringBuilderParsed.append(strColorEnd);
+								stringBuilderParsed.append(strColorStart);
 							}
 						} else {
 							ColorTypeEnum[] colorsTypes = ColorTypeEnum.values();
@@ -286,7 +295,9 @@ public class NoteReader {
 								Color color = new Color( colorType, ColorAttributeTypeEnum.Foreground );
 								if ( color.getRgbColor() != null ) {// it can be null if color type is Transparent.
 									if ( color.getRgbColor().toString().toLowerCase().equals(colorForeground.toString().toLowerCase()) == true ) {
-										strParsed += "[cf_" + color.getColorType().toString().toLowerCase() + "]";
+										stringBuilderParsed.append("[cf_");
+										stringBuilderParsed.append(color.getColorType().toString().toLowerCase());
+										stringBuilderParsed.append("]");
 										// color is allowed
 										attributesCurrent.replace( attrNameFound, attrValue );
 										break;
@@ -318,7 +329,8 @@ public class NoteReader {
 										}
 									}
 								}
-								strParsed += strColorEnd + strColorStart;
+								stringBuilderParsed.append(strColorEnd);
+								stringBuilderParsed.append(strColorStart);
 							}
 						} else {
 							ColorTypeEnum[] colorsTypes = ColorTypeEnum.values();
@@ -328,7 +340,9 @@ public class NoteReader {
 								Color color = new Color( colorType, ColorAttributeTypeEnum.Foreground );
 								if ( color.getRgbColor() != null ) {// it can be null if color type is Transparent.
 									if ( color.getRgbColor().toString().toLowerCase().equals(colorBackground.toString().toLowerCase()) == true ) {
-										strParsed += "[cb_" + color.getColorType().toString().toLowerCase() + "]";
+										stringBuilderParsed.append("[cb_");
+										stringBuilderParsed.append(color.getColorType().toString().toLowerCase());
+										stringBuilderParsed.append("]");
 										// color is allowed
 										attributesCurrent.replace( attrNameFound, attrValue );
 										break;
@@ -372,13 +386,13 @@ public class NoteReader {
 				if ( isAttrNameStrFound == false ) {
 					switch ( attrNameStr ) {
 						case ("bold"):
-							strParsed += "[/b]";
+							stringBuilderParsed.append("[/b]");
 							break;
 						case ("italic"):
-							strParsed += "[/i]";
+							stringBuilderParsed.append("[/i]");
 							break;
 						case ("underline"):
-							strParsed += "[/u]";
+							stringBuilderParsed.append("[/u]");
 							break;
 						case ("size"):
 							FontSize fontSizeH1 = new FontSize( Parameters.getThemeSelected(), FontStyleEnum.Title1 );
@@ -387,11 +401,11 @@ public class NoteReader {
 							
 							Integer sizeIntCurrent = (Integer) attributeCurrentValue;
 							if ( Objects.equals(sizeIntCurrent, fontSizeH1.getSize()) == true )
-								strParsed += "[/h1]";
+								stringBuilderParsed.append("[/h1]");
 							else if ( Objects.equals(sizeIntCurrent, fontSizeH2.getSize()) == true )
-								strParsed += "[/h2]";
+								stringBuilderParsed.append("[/h2]");
 							else if ( Objects.equals(sizeIntCurrent, fontSizeH3.getSize()) == true )
-								strParsed += "[/h3]";
+								stringBuilderParsed.append("[/h3]");
 							break;
 						case ("foreground"):
 							java.awt.Color colorForegroundCurrent = (java.awt.Color) attributeCurrentValue;
@@ -402,7 +416,9 @@ public class NoteReader {
 								Color color = new Color( colorType, ColorAttributeTypeEnum.Foreground );
 								if ( color.getRgbColor() != null ) {// it can be null if color type is Transparent.
 									if ( color.getRgbColor().toString().toLowerCase().equals(colorForegroundCurrent.toString().toLowerCase()) == true ) {
-										strParsed += "[/cf_" + color.getColorType().toString().toLowerCase() + "]";
+										stringBuilderParsed.append("[/cf_");
+										stringBuilderParsed.append(color.getColorType().toString().toLowerCase());
+										stringBuilderParsed.append("]");
 										break;
 									}
 								}
@@ -417,7 +433,9 @@ public class NoteReader {
 								Color color = new Color( colorType, ColorAttributeTypeEnum.Foreground );
 								if ( color.getRgbColor() != null ) {// it can be null if color type is Transparent.
 									if ( color.getRgbColor().toString().toLowerCase().equals(colorBackgroundCurrent.toString().toLowerCase()) == true ) {
-										strParsed += "[/cb_" + color.getColorType().toString().toLowerCase() + "]";
+										stringBuilderParsed.append("[/cb_");
+										stringBuilderParsed.append(color.getColorType().toString().toLowerCase());
+										stringBuilderParsed.append("]");
 										break;
 									}
 								}
@@ -446,11 +464,11 @@ public class NoteReader {
 			} catch (BadLocationException ex) {
 				Logger.getLogger(NoteReader.class.getName()).log(Level.SEVERE, null, ex);
 			}
-			strParsed += strChar;
+			stringBuilderParsed.append(strChar);
 			w++;
 		}
 		
-		return strParsed;
+		return stringBuilderParsed.toString();
 	}
 	
 	public JTextPane parseToPane( String strToParse, JTextPane pane ) throws Re01JLibException {
@@ -498,9 +516,9 @@ public class NoteReader {
 				tagsAllowed.addAll( tagsColorsAllowed );
 
 				int index = 0;
-				String tag = "";
+				StringBuilder stringBuilderTag = new StringBuilder();
 				String character;
-				String str = "";
+				StringBuilder stringBuilder = new StringBuilder();
 				String strToAdd;
 				ArrayList<FontStyleEnum> fontsStyles = new ArrayList<>();
 				ColorTypeEnum foregroundColor = null;
@@ -511,24 +529,26 @@ public class NoteReader {
 					try {
 						character = body.substring( index, index + 1 );
 						if ( character != null ) {
-							str += character;
+							stringBuilder.append(character);
 							String characterLower = character.toLowerCase();
 
 							if ( tagsCharsAllowed.contains(characterLower) )
-								tag += characterLower;
+								stringBuilderTag.append(characterLower);
 							else
-								tag = "";
+								stringBuilderTag = new StringBuilder();
 
-							int tagLength = tag.length();
+							String tag = stringBuilderTag.toString();
+							int tagLength = stringBuilderTag.length();
 							for ( int i = 0; i < tagLength; i++ ) {
 								String tagSub = tag.substring( i, tagLength );
 
 								if ( tagsAllowed.contains(tagSub) ) {
+									String str = stringBuilder.toString();
 									strToAdd = str.substring( 0, str.length() - tagSub.length() );
 									if ( !strToAdd.isEmpty() ) {
 										pane.addText( strToAdd, Parameters.getThemeSelected().createFont(fontsStyles, foregroundColor, backgroundColor) );
 									}
-									str = "";
+									stringBuilder = new StringBuilder();
 
 									switch ( tagSub ) {
 										case ( "[b]" ):
@@ -603,7 +623,7 @@ public class NoteReader {
 											}
 											break;
 									}
-									tag = "";
+									stringBuilderTag = new StringBuilder();
 									break;
 								}
 							}
@@ -613,8 +633,10 @@ public class NoteReader {
 					} catch ( StringIndexOutOfBoundsException e ) { }
 				} while ( character != null );
 
-				if ( !str.isEmpty() ) {
-					strToAdd = str.substring( 0, str.length() );
+				Integer stringBuilderLength = stringBuilder.length();
+				if ( java.util.Objects.equals(stringBuilderLength, 0) == false ) {
+					String str = stringBuilder.toString();
+					strToAdd = str.substring( 0, stringBuilderLength );
 					if ( !strToAdd.isEmpty() ) {
 						pane.addText( strToAdd, Parameters.getThemeSelected().createFont(fontsStyles, foregroundColor, backgroundColor) );
 					}

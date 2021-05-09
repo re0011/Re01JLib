@@ -52,8 +52,9 @@ import re01.design.font.FontStyleEnum;
 import re01.design.theme.Theme;
 import re01.design.theme.ThemeTypeEnum;
 import re01.design.view.swing.jtextpane.DocumentHistory;
-import re01.exception.Re01JLibException;
 import re01.environment.Parameters;
+import re01.exception.Re01JLibException;
+import re01.tool.helper.system.KeyboardHelper;
 import re01.tool.helper.system.MethodHelper;
 import re01.tool.timer.TimerTaskDocumentHistory;
 
@@ -74,12 +75,12 @@ public class JTextPane extends javax.swing.JTextPane {
 	protected ArrayList<DocumentHistory> documentHistory = new ArrayList<>();
 	protected int documentHistoryPosition = 0;
 	protected TimerTaskDocumentHistory timerTaskDocumentHistory = null;
-	protected boolean isFirstDocumentHistoryInserted = false;
-	protected boolean isDocumentHistoryNeedPurge = false;
-	protected boolean isLastKeyPressedBackHistory = false;
+	protected Boolean isFirstDocumentHistoryInserted = false;
+	protected Boolean isDocumentHistoryNeedPurge = false;
+	protected Boolean isCharInsertedFromLastShift = false;
 	
-	protected int selectionStartIndex = 0;
-	protected int scrollPosition;
+	protected Integer selectionStartIndex = 0;
+	protected Integer scrollPosition;
 	protected ArrayList<Integer> searchFoundPositions = new ArrayList<>();
 	protected Integer searchFoundQty = null;
 	protected Integer searchFoundQtyPosition = 0;
@@ -101,6 +102,7 @@ public class JTextPane extends javax.swing.JTextPane {
 	private void construct( boolean enableCopyActionWithStyle, boolean enablePasteAction, Object[] callbacksArgs ) {
 		this.callbacksArgs = callbacksArgs;
 		JTextPane pane = this;
+		KeyboardHelper keyboardHelper = new KeyboardHelper();
 		
 		this.addKeyListener( new KeyListener() {
 			@Override
@@ -128,7 +130,7 @@ public class JTextPane extends javax.swing.JTextPane {
 					
 					insertDocumentHistoryPending();
 					
-					int documentHistoryLength = pane.getDocumentHistory().size();
+					Integer documentHistoryLength = pane.getDocumentHistory().size();
 					Iterator<DocumentHistory> documentHistoryIt = pane.getDocumentHistory().iterator();
 					DocumentHistory documentHistoryLast = null;
 					Integer documentHistoryPositionLast = documentHistoryPosition;
@@ -174,34 +176,18 @@ public class JTextPane extends javax.swing.JTextPane {
 					}
 					
 					isDocumentHistoryNeedPurge = true;
-				}
+				} else if ( Objects.equals(keyCode, KeyEvent.VK_SHIFT) == false 
+				&& keyboardHelper.isKeyCodeNonCharKey(keyCode) == false )
+					isCharInsertedFromLastShift = true;
 			}
 
 			@Override
 			public void keyReleased( KeyEvent evt ) {
 				Integer keyCode = evt.getKeyCode();
 				if ( evt.isControlDown() == false 
-				&& evt.isShiftDown() == false 
 				&& Objects.equals(keyCode, KeyEvent.VK_CONTROL) == false 
-				&& Objects.equals(keyCode, KeyEvent.VK_SHIFT) == false 
-				&& Objects.equals(keyCode, KeyEvent.VK_ALT) == false 
-				&& Objects.equals(keyCode, KeyEvent.VK_ALT_GRAPH) == false 
-				&& Objects.equals(keyCode, KeyEvent.VK_CONTEXT_MENU) == false 
-				&& Objects.equals(keyCode, KeyEvent.VK_CAPS_LOCK) == false 
-				&& Objects.equals(keyCode, KeyEvent.VK_LEFT) == false 
-				&& Objects.equals(keyCode, KeyEvent.VK_RIGHT) == false 
-				&& Objects.equals(keyCode, KeyEvent.VK_UP) == false 
-				&& Objects.equals(keyCode, KeyEvent.VK_DOWN) == false 
-				&& Objects.equals(keyCode, KeyEvent.VK_PAGE_UP) == false 
-				&& Objects.equals(keyCode, KeyEvent.VK_PAGE_DOWN) == false 
-				&& Objects.equals(keyCode, KeyEvent.VK_HOME) == false 
-				&& Objects.equals(keyCode, KeyEvent.VK_END) == false 
-				&& Objects.equals(keyCode, KeyEvent.VK_ESCAPE) == false 
-				&& Objects.equals(keyCode, KeyEvent.VK_INSERT) == false 
-				&& Objects.equals(keyCode, KeyEvent.VK_SCROLL_LOCK) == false 
-				&& Objects.equals(keyCode, KeyEvent.VK_PAUSE) == false 
-				&& Objects.equals(keyCode, KeyEvent.VK_PRINTSCREEN ) == false 
-				&& Objects.equals(keyCode, KeyEvent.VK_WINDOWS) == false ) {
+				&& ( Objects.equals(keyCode, KeyEvent.VK_SHIFT) == false || Objects.equals(keyCode, KeyEvent.VK_SHIFT) == true && isCharInsertedFromLastShift == true ) 
+				&& keyboardHelper.isKeyCodeNonCharKey(keyCode) == false ) {
 					final Timer TIMER = new Timer();
 					
 					if ( timerTaskDocumentHistory != null ) {
@@ -452,7 +438,6 @@ public class JTextPane extends javax.swing.JTextPane {
 		} catch (Re01JLibException ex) {
 			
 		}
-		this.setCaretPosition( caretPosition );
 
 		if ( documentHistory != null )
 			this.getDocumentHistory().add( documentHistory );
@@ -464,9 +449,7 @@ public class JTextPane extends javax.swing.JTextPane {
 			this.getDocumentHistory().remove(0);
 		}
 		
-		if ( selectionStart < selectionEnd ) {
-			this.selectText( selectionStart, selectionEnd );
-		}
+		isCharInsertedFromLastShift = false;
 	}
 	
 	private void insertFirstDocumentHistory() {
@@ -491,7 +474,7 @@ public class JTextPane extends javax.swing.JTextPane {
 	// region text & style
 	//====================
 	
-	public HashMap<Integer, HashMap<SimpleAttributeSet, Integer[]>> copyStyle( boolean isCopyAll ) throws Re01JLibException {
+	public HashMap<Integer, HashMap<SimpleAttributeSet, Integer[]>> copyStyle( Boolean isCopyAll ) throws Re01JLibException {
 		JTextPane paneToCopy;
 		if ( isCopyAll == false )
 			paneToCopy = this;
@@ -506,7 +489,7 @@ public class JTextPane extends javax.swing.JTextPane {
 			paneToCopy.setStyledDocument( this.getStyledDocument() );
 		}
 		
-		int posStart;
+		Integer posStart;
 		Integer posEnd;
 		if ( isCopyAll == false ) {
 			posStart = paneToCopy.getSelectionStart();
@@ -524,11 +507,11 @@ public class JTextPane extends javax.swing.JTextPane {
 		AttributeSet attributeSet = null;
 		
 		Integer posStartNew = 0;
-		int wNew = posStartNew;
+		Integer wNew = posStartNew;
 		Integer wNewLast = wNew;
 		
-		int w = posStart;
-		while ( w < posEnd ) {
+		Integer w = posStart;
+		while ( w <= posEnd ) {
 			paneToCopy.setCaretPosition( w );
 			attributeSet = paneToCopy.getCharacterAttributes();
 
@@ -543,7 +526,7 @@ public class JTextPane extends javax.swing.JTextPane {
 				Object attrName = attrNames.nextElement();
 				String attrNameStr = attrName.toString();
 
-				boolean attrNameStrFound = false;
+				Boolean attrNameStrFound = false;
 				Set<Entry<Object, Object>> attributesCurrentSet = attributesCurrent.entrySet();
 				Iterator<Entry<Object, Object>> attributesCurrentSetIt = attributesCurrentSet.iterator();
 				while ( attributesCurrentSetIt.hasNext() ) {
@@ -580,7 +563,7 @@ public class JTextPane extends javax.swing.JTextPane {
 			// region compare attributes
 			//====================
 
-			boolean isAttributesLastSameAsCurrent = true;
+			Boolean isAttributesLastSameAsCurrent = true;
 
 			Integer attributesCurrentLength = attributesCurrent.size();
 			Integer attributesLastLength = attributesLast.size();
@@ -595,7 +578,7 @@ public class JTextPane extends javax.swing.JTextPane {
 					Object attributeCurrent = attributesCurrentEntry.getKey();
 					String attributeCurrentStr = attributeCurrent.toString();
 
-					boolean attrNameStrFound = false;
+					Boolean attrNameStrFound = false;
 					Set<Entry<Object, Object>> attributesLastSet = attributesLast.entrySet();
 					Iterator<Entry<Object, Object>> attributesLastSetIt = attributesLastSet.iterator();
 					while ( attributesLastSetIt.hasNext() ) {
@@ -648,7 +631,7 @@ public class JTextPane extends javax.swing.JTextPane {
 						Object attributeLast = attributesLastEntry.getKey();
 						String attributeLastStr = attributeLast.toString();
 
-						boolean attrNameStrFound = false;
+						Boolean attrNameStrFound = false;
 						attributesCurrentSetIt = attributesCurrentSet.iterator();
 						while ( attributesCurrentSetIt.hasNext() ) {
 							Entry<Object, Object> attributesCurrentEntry = attributesCurrentSetIt.next();
@@ -698,7 +681,7 @@ public class JTextPane extends javax.swing.JTextPane {
 			// end region compare attributes
 			//====================
 
-			if ( isAttributesLastSameAsCurrent == false || Objects.equals(new Integer(w + 1), posEnd) == true ) {
+			if ( isAttributesLastSameAsCurrent == false || Objects.equals(w, posEnd) == true ) {
 				//====================
 				// region add attribute
 				//====================
@@ -734,7 +717,7 @@ public class JTextPane extends javax.swing.JTextPane {
 				}
 
 				HashMap<SimpleAttributeSet, Integer[]> simpleAttributeSetMap = new HashMap<>();
-				simpleAttributeSetMap.put( simpleAttributeSet, new Integer[]{ wNewLast, wNew + 1 } );
+				simpleAttributeSetMap.put( simpleAttributeSet, new Integer[]{ wNewLast, wNew } );
 				simplesAttributesSet.put( simplesAttributesSetIndex, simpleAttributeSetMap );
 				simplesAttributesSetIndex++;
 
@@ -768,7 +751,7 @@ public class JTextPane extends javax.swing.JTextPane {
 	public void addStyle( FontStyleEnum fontStyleNew, Color colorNew ) throws Re01JLibException {
 		insertFirstDocumentHistory();
 		
-		int posStart = this.getSelectionStart();
+		Integer posStart = this.getSelectionStart();
 		Integer posEnd = this.getSelectionEnd();
 		
 		HashMap<Integer, HashMap<SimpleAttributeSet, Integer[]>> simplesAttributesSet = new HashMap<>();
@@ -777,11 +760,11 @@ public class JTextPane extends javax.swing.JTextPane {
 		HashMap<Object, Object> attributesCurrent = new HashMap<>();
 		
 		AttributeSet attributeSet = null;
-		boolean isAttrExistOnEveryPosition = true;
+		Boolean isAttrExistOnEveryPosition = true;
 		
-		int w = posStart;
+		Integer w = posStart;
 		Integer wLast = w;
-		while ( w < posEnd ) {
+		while ( w <= posEnd ) {
 			this.setCaretPosition( w );
 			attributeSet = this.getCharacterAttributes();
 			
@@ -796,7 +779,7 @@ public class JTextPane extends javax.swing.JTextPane {
 				Object attrName = attrNames.nextElement();
 				String attrNameStr = attrName.toString();
 				
-				boolean attrNameStrFound = false;
+				Boolean attrNameStrFound = false;
 				Set<Entry<Object, Object>> attributesCurrentSet = attributesCurrent.entrySet();
 				Iterator<Entry<Object, Object>> attributesCurrentSetIt = attributesCurrentSet.iterator();
 				while ( attributesCurrentSetIt.hasNext() ) {
@@ -833,7 +816,7 @@ public class JTextPane extends javax.swing.JTextPane {
 			// region compare attributes
 			//====================
 			
-			boolean isAttributesLastSameAsCurrent = true;
+			Boolean isAttributesLastSameAsCurrent = true;
 			
 			Integer attributesCurrentLength = attributesCurrent.size();
 			Integer attributesLastLength = attributesLast.size();
@@ -848,7 +831,7 @@ public class JTextPane extends javax.swing.JTextPane {
 					Object attributeCurrent = attributesCurrentEntry.getKey();
 					String attributeCurrentStr = attributeCurrent.toString();
 					
-					boolean attrNameStrFound = false;
+					Boolean attrNameStrFound = false;
 					Set<Entry<Object, Object>> attributesLastSet = attributesLast.entrySet();
 					Iterator<Entry<Object, Object>> attributesLastSetIt = attributesLastSet.iterator();
 					while ( attributesLastSetIt.hasNext() ) {
@@ -864,24 +847,21 @@ public class JTextPane extends javax.swing.JTextPane {
 								case ("italic"):
 									Boolean boolCurrent = (Boolean) attributesCurrentEntry.getValue();
 									Boolean boolLast = (Boolean) attributesLastEntry.getValue();
-									if ( boolCurrent == boolLast ) {
+									if ( Objects.equals(boolCurrent, boolLast) == true )
 										attrNameStrFound = true;
-									}
 									break;
 								case ("size"):
 									Integer intCurrent = (Integer) attributesCurrentEntry.getValue();
 									Integer intLast = (Integer) attributesLastEntry.getValue();
-									if ( Objects.equals(intCurrent, intLast) == true ) {
+									if ( Objects.equals(intCurrent, intLast) == true )
 										attrNameStrFound = true;
-									}
 									break;
 								case ("foreground"):
 								case ("background"):
 									java.awt.Color colorCurrent = (java.awt.Color) attributesCurrentEntry.getValue();
 									java.awt.Color colorLast = (java.awt.Color) attributesLastEntry.getValue();
-									if ( colorCurrent.equals(colorLast) == true ) {
+									if ( colorCurrent.equals(colorLast) == true )
 										attrNameStrFound = true;
-									}
 									break;
 							}
 						}
@@ -901,7 +881,7 @@ public class JTextPane extends javax.swing.JTextPane {
 						Object attributeLast = attributesLastEntry.getKey();
 						String attributeLastStr = attributeLast.toString();
 						
-						boolean attrNameStrFound = false;
+						Boolean attrNameStrFound = false;
 						attributesCurrentSetIt = attributesCurrentSet.iterator();
 						while ( attributesCurrentSetIt.hasNext() ) {
 							Entry<Object, Object> attributesCurrentEntry = attributesCurrentSetIt.next();
@@ -915,24 +895,21 @@ public class JTextPane extends javax.swing.JTextPane {
 									case ("italic"):
 										Boolean boolCurrent = (Boolean) attributesCurrentEntry.getValue();
 										Boolean boolLast = (Boolean) attributesLastEntry.getValue();
-										if ( boolCurrent == boolLast ) {
+										if ( boolCurrent == boolLast )
 											attrNameStrFound = true;
-										}
 										break;
 									case ("size"):
 										Integer intCurrent = (Integer) attributesCurrentEntry.getValue();
 										Integer intLast = (Integer) attributesLastEntry.getValue();
-										if ( Objects.equals(intCurrent, intLast) == true ) {
+										if ( Objects.equals(intCurrent, intLast) == true )
 											attrNameStrFound = true;
-										}
 										break;
 									case ("foreground"):
 									case ("background"):
 										java.awt.Color colorCurrent = (java.awt.Color) attributesCurrentEntry.getValue();
 										java.awt.Color colorLast = (java.awt.Color) attributesLastEntry.getValue();
-										if ( colorCurrent.equals(colorLast) == true ) {
+										if ( colorCurrent.equals(colorLast) == true )
 											attrNameStrFound = true;
-										}
 										break;
 								}
 							}
@@ -951,7 +928,7 @@ public class JTextPane extends javax.swing.JTextPane {
 			// end region compare attributes
 			//====================
 			
-			if ( isAttributesLastSameAsCurrent == false || Objects.equals(new Integer(w + 1), posEnd) == true ) {
+			if ( isAttributesLastSameAsCurrent == false || Objects.equals(w, posEnd) == true ) {
 				//====================
 				// region add attribute
 				//====================
@@ -967,22 +944,21 @@ public class JTextPane extends javax.swing.JTextPane {
 					String attributeLastStr = attributeLast.toString();
 					switch ( attributeLastStr ) {
 						case ("bold"):
-							if ( fontStyleNew == null || fontStyleNew != null && fontStyleNew != FontStyleEnum.Bold ) {
+							if ( fontStyleNew == null || fontStyleNew != null && fontStyleNew != FontStyleEnum.Bold )
 								simpleAttributeSet.addAttribute( StyleConstants.FontConstants.Bold, attributeLastVal );
-							} else {
+							else
 								isAttrNameFound = (Boolean) attributeLastVal;
-							}
 							break;
 						case ("italic"):
-							if ( fontStyleNew == null || fontStyleNew != null && fontStyleNew != FontStyleEnum.Italic ) {
+							if ( fontStyleNew == null || fontStyleNew != null && fontStyleNew != FontStyleEnum.Italic )
 								simpleAttributeSet.addAttribute( StyleConstants.CharacterConstants.Italic, attributeLastVal );
-							} else
+							else
 								isAttrNameFound = (Boolean) attributeLastVal;
 							break;
 						case ("underline"):
-							if ( fontStyleNew == null || fontStyleNew != null && fontStyleNew != FontStyleEnum.Underline ) {
+							if ( fontStyleNew == null || fontStyleNew != null && fontStyleNew != FontStyleEnum.Underline )
 								simpleAttributeSet.addAttribute( StyleConstants.CharacterConstants.Underline, attributeLastVal );
-							} else
+							else
 								isAttrNameFound = (Boolean) attributeLastVal;
 							break;
 						case ("size"):
@@ -1001,7 +977,7 @@ public class JTextPane extends javax.swing.JTextPane {
 					isAttrExistOnEveryPosition = false;
 
 				HashMap<SimpleAttributeSet, Integer[]> simpleAttributeSetMap = new HashMap<>();
-				simpleAttributeSetMap.put( simpleAttributeSet, new Integer[]{ wLast, w + 1 } );
+				simpleAttributeSetMap.put( simpleAttributeSet, new Integer[]{ wLast, w } );
 				simplesAttributesSet.put( simplesAttributesSetIndex, simpleAttributeSetMap );
 				simplesAttributesSetIndex++;
 				
@@ -1041,7 +1017,7 @@ public class JTextPane extends javax.swing.JTextPane {
 		selectText( posStart, posEnd );
 	}
 	
-	public void setCharacterAttributes( HashMap<Integer, HashMap<SimpleAttributeSet, Integer[]>> simplesAttributesSet, boolean isAttrExistOnEveryPosition, Integer positionPlus, FontStyleEnum fontStyleNew, Color colorNew ) throws Re01JLibException {
+	public void setCharacterAttributes( HashMap<Integer, HashMap<SimpleAttributeSet, Integer[]>> simplesAttributesSet, Boolean isAttrExistOnEveryPosition, Integer positionPlus, FontStyleEnum fontStyleNew, Color colorNew ) throws Re01JLibException {
 		Set<Entry<Integer, HashMap<SimpleAttributeSet, Integer[]>>> simplesAttributesSetEntry = simplesAttributesSet.entrySet();
 		Iterator<Entry<Integer, HashMap<SimpleAttributeSet, Integer[]>>> simplesAttributesSetEntryIt = simplesAttributesSetEntry.iterator();
 		
@@ -1060,28 +1036,23 @@ public class JTextPane extends javax.swing.JTextPane {
 				
 				SimpleAttributeSet simpleAttrSetNew = new SimpleAttributeSet();
 				Enumeration attrNames = simpleAttrSet.getAttributeNames();
-				Object backgroundAttrName = null;
 				while ( attrNames.hasMoreElements() ) {
 					Object attrName = attrNames.nextElement();
-					String attrNameStr = attrName.toString();
-					if ( attrNameStr.equals("background") == false )
-						simpleAttrSetNew.addAttribute( attrName, simpleAttrSet.getAttribute(attrName) );
-					else
-						backgroundAttrName = attrName;
+					simpleAttrSetNew.addAttribute( attrName, simpleAttrSet.getAttribute(attrName) );
 				}
 
 				if ( fontStyleNew != null ) {
 					switch ( fontStyleNew ) {
 						case Bold :
-							boolean isSetBold = ( isAttrExistOnEveryPosition == false ) ? true : false;
+							Boolean isSetBold = isAttrExistOnEveryPosition == false;
 							StyleConstants.setBold( simpleAttrSetNew, isSetBold );
 							break;
 						case Italic :
-							boolean isSetItalic = ( isAttrExistOnEveryPosition == false ) ? true : false;
+							Boolean isSetItalic = isAttrExistOnEveryPosition == false;
 							StyleConstants.setItalic( simpleAttrSetNew, isSetItalic );
 							break;
 						case Underline :
-							boolean isSetUnderline = ( isAttrExistOnEveryPosition == false ) ? true : false;
+							Boolean isSetUnderline = isAttrExistOnEveryPosition == false;
 							StyleConstants.setUnderline( simpleAttrSetNew, isSetUnderline );
 							break;
 						case SizeNormal :
@@ -1104,9 +1075,7 @@ public class JTextPane extends javax.swing.JTextPane {
 								StyleConstants.setBackground( simpleAttrSetNew, colorNew.getRgbColor() );
 							break;
 					}
-				} else if ( backgroundAttrName != null )
-					simpleAttrSetNew.addAttribute(backgroundAttrName, simpleAttrSet.getAttribute(backgroundAttrName) );
-					
+				}
 				
 				StyledDocument doc = this.getStyledDocument();
 				try {
@@ -1122,8 +1091,8 @@ public class JTextPane extends javax.swing.JTextPane {
 	public void deleteStyle() throws Re01JLibException {
 		insertFirstDocumentHistory();
 		
-		int posStart = this.getSelectionStart();
-		int posEnd = this.getSelectionEnd();
+		Integer posStart = this.getSelectionStart();
+		Integer posEnd = this.getSelectionEnd();
 		
 		SimpleAttributeSet simpleAttributeSet = new SimpleAttributeSet();
 		StyledDocument doc = this.getStyledDocument();
@@ -1187,10 +1156,10 @@ public class JTextPane extends javax.swing.JTextPane {
 				textLast = documentTextAll;
 			}
 			
-			int searchKeyWordLowerLength = searchKeyWordLower.length();
+			Integer searchKeyWordLowerLength = searchKeyWordLower.length();
 			try {
-				boolean found = false;
-				int foundQty = 0;
+				Boolean found = false;
+				Integer foundQty = 0;
 				searchFoundQtyPosition = 0;
 				if (scrollPosition + searchKeyWordLowerLength > document.getLength()) {
 					scrollPosition = 0;
@@ -1217,7 +1186,7 @@ public class JTextPane extends javax.swing.JTextPane {
 					scrollPosition++;
 				}
 
-				boolean isFoundPositionEqualsZero = Objects.equals(searchFoundQtyPosition, 0);
+				Boolean isFoundPositionEqualsZero = Objects.equals(searchFoundQtyPosition, 0);
 				if (searchFoundQty == null) {
 					searchFoundQty = foundQty;
 				} else {
