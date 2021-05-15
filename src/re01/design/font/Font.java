@@ -75,6 +75,7 @@ public class Font {
 						break;
 					case Italic:
 						fontStyleAwt = java.awt.Font.ITALIC;
+						break;
 					case Bold:
 						fontStyleAwt = java.awt.Font.BOLD;
 						break;
@@ -176,7 +177,7 @@ public class Font {
 	//====================
 	//====================
 	
-	public SimpleAttributeSet createSimpleAttributeSet( ArrayList<FontStyleEnum> fontsStyles, ColorTypeEnum colorTypeForeground, ColorTypeEnum colorTypeBackground ) {
+	private SimpleAttributeSet createSimpleAttributeSet( ArrayList<FontStyleEnum> fontsStyles, ColorTypeEnum colorTypeForeground, ColorTypeEnum colorTypeBackground ) {
 		SimpleAttributeSet simpleAttributeSet = new SimpleAttributeSet();
 		if ( fontsStyles != null ) {
 			Iterator<FontStyleEnum> fontsStylesIt = fontsStyles.iterator();

@@ -23,6 +23,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import javax.swing.JComponent;
+import re01.design.image.Images;
 import re01.design.view.swing.JButton;
 import re01.environment.Parameters;
 
@@ -34,21 +35,34 @@ public class ScrollBarHorizontalUI extends ScrollBarUI {
 	
 	@Override
 	protected void paintTrack( Graphics g, JComponent compo, Rectangle rect ) {
-		super.paintTrack( g, compo, rect );
-		
 		compo.setPreferredSize( new Dimension(2, Parameters.get_RECOMMENDED_SCROLL_BAR_SIZE()) );
+		super.paintTrack( g, compo, rect );
 	}
 	
 	@Override
 	protected JButton createDecreaseButton(int arg0) {
-		JButton button  = new JButton("<");
+		Images images = new Images();
+		JButton button  = new JButton( 
+			images.createGlobalImageIconButtonArrowLeft(
+				new Float(
+					new Float(Parameters.get_RECOMMENDED_SCROLL_BAR_SIZE()) / new Float(2.5)
+				).intValue()
+			) 
+		);
 		button.setFocusable( false );
 		return button;
 	}
 
 	@Override
 	protected JButton createIncreaseButton(int arg0) {
-		JButton button  = new JButton(">");
+		Images images = new Images();
+		JButton button  = new JButton(
+			images.createGlobalImageIconButtonArrowRight(
+				new Float(
+					new Float(Parameters.get_RECOMMENDED_SCROLL_BAR_SIZE()) / new Float(2.5)
+				).intValue()
+			)
+		);
 		button.setFocusable( false );
 		return button;
 	}

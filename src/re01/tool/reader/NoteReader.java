@@ -180,11 +180,11 @@ public class NoteReader {
 						if ( attrNameFound != null ) {
 							Boolean boldBoolCurrent = (Boolean) attributesCurrent.get( attrNameFound );
 							if ( boldBool != boldBoolCurrent ) {
-								if ( boldBool == true ) {
+								if ( boldBool == true )
 									stringBuilderParsed.append("[b]");
-								} else {
+								else
 									stringBuilderParsed.append("[/b]");
-								}
+								
 								attributesCurrent.replace( attrNameFound, attrValue );
 							}
 						} else if ( boldBool == true ) {
@@ -213,11 +213,11 @@ public class NoteReader {
 						if ( attrNameFound != null ) {
 							Boolean italicBoolCurrent = (Boolean) attributesCurrent.get( attrNameFound );
 							if ( italicBool != italicBoolCurrent ) {
-								if ( italicBool == true ) {
+								if ( italicBool == true )
 									stringBuilderParsed.append("[i]");
-								} else {
+								else
 									stringBuilderParsed.append("[/i]");
-								}
+								
 								attributesCurrent.replace( attrNameFound, attrValue );
 							}
 						} else if ( italicBool == true ) {
@@ -231,25 +231,24 @@ public class NoteReader {
 						FontSize fontSizeH1 = new FontSize( Parameters.getThemeSelected(), FontStyleEnum.Title1 );
 						FontSize fontSizeH2 = new FontSize( Parameters.getThemeSelected(), FontStyleEnum.Title2 );
 						FontSize fontSizeH3 = new FontSize( Parameters.getThemeSelected(), FontStyleEnum.Title3 );
-
+						
 						if ( attrNameFound != null ) {
 							Integer sizeIntCurrent = (Integer) attributesCurrent.get( attrNameFound );
 							if ( Objects.equals(sizeInt, sizeIntCurrent) == false ) {
-								if ( Objects.equals(sizeIntCurrent, fontSizeH1.getSize()) == true && Objects.equals(sizeInt, fontSizeH1.getSize()) == false ) {
+								if ( Objects.equals(sizeIntCurrent, fontSizeH1.getSize()) == true && Objects.equals(sizeInt, fontSizeH1.getSize()) == false )
 									stringBuilderParsed.append("[/h1]");
-								} else if ( Objects.equals(sizeIntCurrent, fontSizeH2.getSize()) == true && Objects.equals(sizeInt, fontSizeH2.getSize()) == false ) {
+								else if ( Objects.equals(sizeIntCurrent, fontSizeH2.getSize()) == true && Objects.equals(sizeInt, fontSizeH2.getSize()) == false )
 									stringBuilderParsed.append("[/h2]");
-								} else if ( Objects.equals(sizeIntCurrent, fontSizeH3.getSize()) == true && Objects.equals(sizeInt, fontSizeH3.getSize()) == false ) {
+								else if ( Objects.equals(sizeIntCurrent, fontSizeH3.getSize()) == true && Objects.equals(sizeInt, fontSizeH3.getSize()) == false )
 									stringBuilderParsed.append("[/h3]");
-								}
 
-								if ( Objects.equals(sizeIntCurrent, fontSizeH1.getSize()) == false && Objects.equals(sizeInt, fontSizeH1.getSize()) == true ) {
+								if ( Objects.equals(sizeIntCurrent, fontSizeH1.getSize()) == false && Objects.equals(sizeInt, fontSizeH1.getSize()) == true )
 									stringBuilderParsed.append("[h1]");
-								} else if ( Objects.equals(sizeIntCurrent, fontSizeH2.getSize()) == false && Objects.equals(sizeInt, fontSizeH2.getSize()) == true ) {
+								else if ( Objects.equals(sizeIntCurrent, fontSizeH2.getSize()) == false && Objects.equals(sizeInt, fontSizeH2.getSize()) == true )
 									stringBuilderParsed.append("[h2]");
-								} else if ( Objects.equals(sizeIntCurrent, fontSizeH3.getSize()) == false && Objects.equals(sizeInt, fontSizeH3.getSize()) == true ) {
+								else if ( Objects.equals(sizeIntCurrent, fontSizeH3.getSize()) == false && Objects.equals(sizeInt, fontSizeH3.getSize()) == true )
 									stringBuilderParsed.append("[h3]");
-								}
+								
 								attributesCurrent.replace( attrNameFound, attrValue );
 							}
 						} else {
@@ -259,6 +258,7 @@ public class NoteReader {
 								stringBuilderParsed.append("[h2]");
 							else if ( Objects.equals(sizeInt, fontSizeH3.getSize()) == true )
 								stringBuilderParsed.append("[h3]");
+							
 							attributesCurrent.put( attrName, attrValue );
 						}
 						break;
@@ -467,7 +467,6 @@ public class NoteReader {
 			stringBuilderParsed.append(strChar);
 			w++;
 		}
-		
 		return stringBuilderParsed.toString();
 	}
 	

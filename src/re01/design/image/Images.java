@@ -209,6 +209,152 @@ public class Images {
 		return imageIcon;
 	}
 	
+	public ImageIcon createGlobalImageIconButtonArrowTop( int size ) {
+		ImageIcon imageIcon = null;
+		
+		BufferedImage bufferedImage = new BufferedImage( size, size, BufferedImage.TYPE_INT_ARGB );
+		Graphics2D g2d = bufferedImage.createGraphics();
+		
+		Float sizeHalf = new Float(size) / new Float(2);
+		int sizeHalfInt = sizeHalf.intValue();
+		
+		Integer x1 = null;
+		Integer x2 = null;
+		
+		for ( int i = 0; i < size; i++ ) {
+			if ( x1 == null )
+				x1 = sizeHalfInt;
+			if ( x2 == null )
+				x2 = sizeHalfInt;
+			
+			for (int i2 = 0; i2 < size; i2++) {
+				if ( i < size && i2 >= x1 && i2 < x2 ) {
+					g2d.setColor( Parameters.getThemeSelected().getButtonForegroundColor().getRgbColor() );
+					g2d.fillRect(i2, i, 1, 1);
+				}
+			}
+			
+			if ( Objects.equals(i % 2, 0) == true ) {
+				x1--;
+				x2++;
+			}
+		}
+		
+		imageIcon = new ImageIcon( bufferedImage );
+		g2d.dispose();
+		
+		imageIcon.setDescription( ImageTypeEnum.GlobalImageIconCaution.toString() );
+		return imageIcon;
+	}
+	
+	public ImageIcon createGlobalImageIconButtonArrowBottom( int size ) {
+		ImageIcon imageIcon = null;
+		
+		BufferedImage bufferedImage = new BufferedImage( size, size, BufferedImage.TYPE_INT_ARGB );
+		Graphics2D g2d = bufferedImage.createGraphics();
+		
+		Integer x1 = null;
+		Integer x2 = null;
+		
+		for ( int i = 0; i < size; i++ ) {
+			if ( x1 == null )
+				x1 = 0;
+			if ( x2 == null )
+				x2 = size;
+			
+			for (int i2 = 0; i2 < size; i2++) {
+				if ( i < size && i2 >= x1 && i2 < x2 ) {
+					g2d.setColor( Parameters.getThemeSelected().getButtonForegroundColor().getRgbColor() );
+					g2d.fillRect(i2, i, 1, 1);
+				}
+			}
+			
+			if ( Objects.equals(i % 2, 0) == true ) {
+				x1++;
+				x2--;
+			}
+		}
+		
+		imageIcon = new ImageIcon( bufferedImage );
+		g2d.dispose();
+		
+		imageIcon.setDescription( ImageTypeEnum.GlobalImageIconCaution.toString() );
+		return imageIcon;
+	}
+	
+	public ImageIcon createGlobalImageIconButtonArrowLeft( int size ) {
+		ImageIcon imageIcon = null;
+		
+		BufferedImage bufferedImage = new BufferedImage( size, size, BufferedImage.TYPE_INT_ARGB );
+		Graphics2D g2d = bufferedImage.createGraphics();
+		
+		Float sizeHalf = new Float(size) / new Float(2);
+		int sizeHalfInt = sizeHalf.intValue();
+		
+		Integer y1 = null;
+		Integer y2 = null;
+		
+		for ( int i = 0; i < size; i++ ) {
+			if ( y1 == null )
+				y1 = sizeHalfInt;
+			if ( y2 == null )
+				y2 = sizeHalfInt;
+			
+			for (int i2 = 0; i2 < size; i2++) {
+				if ( i < size && i2 >= y1 && i2 < y2 ) {
+					g2d.setColor( Parameters.getThemeSelected().getButtonForegroundColor().getRgbColor() );
+					g2d.fillRect(i, i2, 1, 1);
+				}
+			}
+			
+			if ( Objects.equals(i % 2, 0) == true ) {
+				y1--;
+				y2++;
+			}
+		}
+		
+		imageIcon = new ImageIcon( bufferedImage );
+		g2d.dispose();
+		
+		imageIcon.setDescription( ImageTypeEnum.GlobalImageIconCaution.toString() );
+		return imageIcon;
+	}
+	
+	public ImageIcon createGlobalImageIconButtonArrowRight( int size ) {
+		ImageIcon imageIcon = null;
+		
+		BufferedImage bufferedImage = new BufferedImage( size, size, BufferedImage.TYPE_INT_ARGB );
+		Graphics2D g2d = bufferedImage.createGraphics();
+		
+		Integer y1 = null;
+		Integer y2 = null;
+		
+		for ( int i = 0; i < size; i++ ) {
+			if ( y1 == null )
+				y1 = 0;
+			if ( y2 == null )
+				y2 = size;
+			
+			for (int i2 = 0; i2 < size; i2++) {
+				if ( i < size && i2 >= y1 && i2 < y2 ) {
+					g2d.setColor( Parameters.getThemeSelected().getButtonForegroundColor().getRgbColor() );
+					g2d.fillRect(i, i2, 1, 1);
+				}
+			}
+			
+			if ( Objects.equals(i % 2, 0) == true ) {
+				y1++;
+				y2--;
+			}
+		}
+		
+		imageIcon = new ImageIcon( bufferedImage );
+		g2d.dispose();
+		
+		imageIcon.setDescription( ImageTypeEnum.GlobalImageIconCaution.toString() );
+		return imageIcon;
+	}
+	
 	public ImageIcon createGlobalImageIconInfo( int size ) {
 		ImageIcon imageIcon = null;
 		

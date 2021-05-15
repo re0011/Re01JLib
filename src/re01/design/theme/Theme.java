@@ -68,179 +68,46 @@ public class Theme {
 		switch ( this.themeType ) {
 			case MetalSlate:
 				this.foregroundColor = new Color( ColorTypeEnum.Black, ColorAttributeTypeEnum.Foreground );
-				break;
-			default:
-				this.foregroundColor = new Color( ColorTypeEnum.Black, ColorAttributeTypeEnum.Foreground );
-				break;
-		}
-		
-		switch ( this.themeType ) {
-			case MetalSlate:
 				this.backgroundColor = new Color( ColorTypeEnum.GrayLight, ColorAttributeTypeEnum.Background );
-				break;
-			default:
-				this.backgroundColor = new Color( ColorTypeEnum.White, ColorAttributeTypeEnum.Background );
-				break;
-		}
-		
-		switch ( this.themeType ) {
-			case MetalSlate:
 				this.backgroundColorAlternate = new Color( ColorTypeEnum.Gainsboro, ColorAttributeTypeEnum.Background );
-				break;
-			default:
-				this.backgroundColorAlternate = new Color( ColorTypeEnum.White, ColorAttributeTypeEnum.Background );
-				break;
-		}
-		
-		switch ( this.themeType ) {
-			case MetalSlate:
 				this.linkColor = new Color( ColorTypeEnum.Blue, ColorAttributeTypeEnum.Foreground );
-				break;
-			default:
-				this.linkColor = new Color( ColorTypeEnum.Blue, ColorAttributeTypeEnum.Foreground );
-				break;
-		}
-		
-		switch ( this.themeType ) {
-			case MetalSlate:
 				this.selectedTextColor = new Color( ColorTypeEnum.Black, ColorAttributeTypeEnum.Foreground );
-				break;
-			default:
-				this.selectedTextColor = new Color( ColorTypeEnum.Black, ColorAttributeTypeEnum.Foreground );
-				break;
-		}
-		
-		switch ( this.themeType ) {
-			case MetalSlate:
 				this.selectionColor = new Color( ColorTypeEnum.BlueBell, ColorAttributeTypeEnum.Background );
-				break;
-			default:
-				this.selectionColor = new Color( ColorTypeEnum.BlueBell, ColorAttributeTypeEnum.Background );
-				break;
-		}
-		
-		switch ( this.themeType ) {
-			case MetalSlate:
 				this.osFolderColor = new Color( ColorTypeEnum.Bronze, ColorAttributeTypeEnum.Background );
-				break;
-			default:
-				this.osFolderColor = new Color( ColorTypeEnum.YellowNaples, ColorAttributeTypeEnum.Background );
-				break;
-		}
-		
-		switch ( this.themeType ) {
-			case MetalSlate:
 				this.panelBackgroundColor = new Color( ColorTypeEnum.Gray, ColorAttributeTypeEnum.Background );
-				break;
-			default:
-				this.panelBackgroundColor = new Color( ColorTypeEnum.Gray, ColorAttributeTypeEnum.Background );
-				break;
-		}
-		
-		switch ( this.themeType ) {
-			case MetalSlate:
 				this.popupForegroundColor = new Color( ColorTypeEnum.DarkBlueGray, ColorAttributeTypeEnum.Foreground );
-				break;
-			default:
-				this.popupForegroundColor = new Color( ColorTypeEnum.Black, ColorAttributeTypeEnum.Foreground );
-				break;
-		}
-		
-		switch ( this.themeType ) {
-			case MetalSlate:
 				this.popupBackgroundColor = new Color( ColorTypeEnum.Gainsboro, ColorAttributeTypeEnum.Background );
-				break;
-			default:
-				this.popupBackgroundColor = new Color( ColorTypeEnum.GrayLight, ColorAttributeTypeEnum.Background );
-				break;
-		}
-		
-		switch ( this.themeType ) {
-			case MetalSlate:
 				this.popupMenuForegroundColor = new Color( ColorTypeEnum.Gray, ColorAttributeTypeEnum.Foreground );
-				break;
-			default:
-				this.popupMenuForegroundColor = new Color( ColorTypeEnum.Black, ColorAttributeTypeEnum.Foreground );
-				break;
-		}
-		
-		switch ( this.themeType ) {
-			case MetalSlate:
 				this.popupMenuBackgroundColor = new Color( ColorTypeEnum.White, ColorAttributeTypeEnum.Background );
-				break;
-			default:
-				this.popupMenuBackgroundColor = new Color( ColorTypeEnum.White, ColorAttributeTypeEnum.Background );
-				break;
-		}
-		
-		switch ( this.themeType ) {
-			case MetalSlate:
 				this.menuItemForegroundColor = new Color( ColorTypeEnum.DarkSlateGray, ColorAttributeTypeEnum.Foreground );
-				break;
-			default:
-				this.menuItemForegroundColor = new Color( ColorTypeEnum.Black, ColorAttributeTypeEnum.Foreground );
-				break;
-		}
-		
-		switch ( this.themeType ) {
-			case MetalSlate:
 				this.menuItemBackgroundColor = new Color( ColorTypeEnum.White, ColorAttributeTypeEnum.Background );
-				break;
-			default:
-				this.menuItemBackgroundColor = new Color( ColorTypeEnum.White, ColorAttributeTypeEnum.Background );
-				break;
-		}
-		
-		switch ( this.themeType ) {
-			case MetalSlate:
 				this.buttonForegroundColor = new Color( ColorTypeEnum.GrayLight, ColorAttributeTypeEnum.Foreground );
-				break;
-			default:
-				this.buttonForegroundColor = new Color( ColorTypeEnum.Black, ColorAttributeTypeEnum.Foreground );
-				break;
-		}
-		
-		switch ( this.themeType ) {
-			case MetalSlate:
 				this.buttonForegroundActiveColor = new Color( ColorTypeEnum.Green, ColorAttributeTypeEnum.Foreground );
-				break;
-			default:
-				this.buttonForegroundActiveColor = new Color( ColorTypeEnum.Black, ColorAttributeTypeEnum.Foreground );
-				break;
-		}
-		
-		switch ( this.themeType ) {
-			case MetalSlate:
 				this.buttonForegroundOverColor = new Color( ColorTypeEnum.White, ColorAttributeTypeEnum.Foreground );
-				break;
-			default:
-				this.buttonForegroundOverColor = new Color( ColorTypeEnum.Black, ColorAttributeTypeEnum.Foreground );
-				break;
-		}
-		
-		switch ( this.themeType ) {
-			case MetalSlate:
 				this.buttonBackgroundColor = new Color( ColorTypeEnum.BlackCoral, ColorAttributeTypeEnum.Background );
-				break;
-			default:
-				this.buttonBackgroundColor = new Color( ColorTypeEnum.White, ColorAttributeTypeEnum.Background );
-				break;
-		}
-		
-		switch ( this.themeType ) {
-			case MetalSlate:
 				this.buttonBackgroundActiveColor = new Color( ColorTypeEnum.DarkSlateGray, ColorAttributeTypeEnum.Background );
-				break;
-			default:
-				this.buttonBackgroundActiveColor = new Color( ColorTypeEnum.White, ColorAttributeTypeEnum.Background );
-				break;
-		}
-		
-		switch ( this.themeType ) {
-			case MetalSlate:
 				this.buttonBackgroundOverColor = new Color( ColorTypeEnum.GrayLightSlate, ColorAttributeTypeEnum.Background );
 				break;
 			default:
+				this.foregroundColor = new Color( ColorTypeEnum.Black, ColorAttributeTypeEnum.Foreground );
+				this.backgroundColor = new Color( ColorTypeEnum.White, ColorAttributeTypeEnum.Background );
+				this.backgroundColorAlternate = new Color( ColorTypeEnum.White, ColorAttributeTypeEnum.Background );
+				this.linkColor = new Color( ColorTypeEnum.Blue, ColorAttributeTypeEnum.Foreground );
+				this.selectedTextColor = new Color( ColorTypeEnum.Black, ColorAttributeTypeEnum.Foreground );
+				this.selectionColor = new Color( ColorTypeEnum.BlueBell, ColorAttributeTypeEnum.Background );
+				this.osFolderColor = new Color( ColorTypeEnum.YellowNaples, ColorAttributeTypeEnum.Background );
+				this.panelBackgroundColor = new Color( ColorTypeEnum.Gray, ColorAttributeTypeEnum.Background );
+				this.popupForegroundColor = new Color( ColorTypeEnum.Black, ColorAttributeTypeEnum.Foreground );
+				this.popupBackgroundColor = new Color( ColorTypeEnum.GrayLight, ColorAttributeTypeEnum.Background );
+				this.popupMenuForegroundColor = new Color( ColorTypeEnum.Black, ColorAttributeTypeEnum.Foreground );
+				this.popupMenuBackgroundColor = new Color( ColorTypeEnum.White, ColorAttributeTypeEnum.Background );
+				this.menuItemForegroundColor = new Color( ColorTypeEnum.Black, ColorAttributeTypeEnum.Foreground );
+				this.menuItemBackgroundColor = new Color( ColorTypeEnum.White, ColorAttributeTypeEnum.Background );
+				this.buttonForegroundColor = new Color( ColorTypeEnum.Black, ColorAttributeTypeEnum.Foreground );
+				this.buttonForegroundActiveColor = new Color( ColorTypeEnum.Black, ColorAttributeTypeEnum.Foreground );
+				this.buttonForegroundOverColor = new Color( ColorTypeEnum.Black, ColorAttributeTypeEnum.Foreground );
+				this.buttonBackgroundColor = new Color( ColorTypeEnum.White, ColorAttributeTypeEnum.Background );
+				this.buttonBackgroundActiveColor = new Color( ColorTypeEnum.White, ColorAttributeTypeEnum.Background );
 				this.buttonBackgroundOverColor = new Color( ColorTypeEnum.White, ColorAttributeTypeEnum.Background );
 				break;
 		}
